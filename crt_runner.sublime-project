@@ -6,6 +6,19 @@
 			"name": "Anaconda Python Builder",
 			"selector": "source.python",
 			"shell_cmd": "/usr/local/bin/python3 -u \"$file\""
+		},
+		{
+			"cmd":
+			[
+				"py.test"
+			],
+			"env":
+			{
+				"PYTHONPATH": "/Users/mcox/Code/Python"
+			},
+			"name": "Run Tests",
+			"path": "/usr/local/bin/",
+			"working_dir": "${project_path}"
 		}
 	],
 	"folders":
