@@ -1,6 +1,8 @@
 from unittest.mock import patch
 from ..perl_execution import PerlCommand
-
+from ..messenger import Messenger
+from ..crt_log import CRTLog
+import tempfile
 
 def test_run_command_with_parameters():
     pc = PerlCommand()
@@ -20,3 +22,13 @@ def test_run_command_with_parameters():
                           'some_user_settings_file.txt',
                           'some_output_directory']
     subprocess_mock.assert_called_with(expected_arguments,stdout=pc.log_file)
+
+def test_successful_run_results_sends_mesage():
+  pc = PerlCommand()
+  pc.log_file = tempfile.TemporaryFile()
+  with patch.object(PerlCommand,'run_crt') as run_crt_mock:
+    with patch.object(Messenger,'send_email') as send_email_mock:
+      with patch.object(CRTLog,'successfully_completed',return_value=True):
+        pc.run_crt_with_notifications()
+  
+  send_email_mock.assert_called_with('CRT Successfully completed!')
