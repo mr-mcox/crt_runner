@@ -11,4 +11,4 @@ class PerlCommand(object):
 			self.cms_file,
 			self.collab_file,
 			self.user_settings_file,
-			self.output_directory])
+			self.output_directory],stdout=self.log_file)
