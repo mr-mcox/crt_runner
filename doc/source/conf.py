@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # CRT Runner documentation build configuration file, created by
-# sphinx-quickstart on Mon Feb 23 12:14:53 2015.
+# sphinx-quickstart on Tue Feb 24 09:01:01 2015.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -49,7 +49,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'CRT Runner'
-copyright = '2015, Matthew Cox, Nick Smrdel and Others!'
+copyright = '2015, Matthew Cox, Nick Smrdel and others'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -72,7 +72,7 @@ release = '0.1'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = []
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -202,7 +202,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('index', 'CRTRunner.tex', 'CRT Runner Documentation',
-   'Matthew Cox, Nick Smrdel and Others!', 'manual'),
+   'Matthew Cox, Nick Smrdel and others', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -232,7 +232,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'crtrunner', 'CRT Runner Documentation',
-     ['Matthew Cox, Nick Smrdel and Others!'], 1)
+     ['Matthew Cox, Nick Smrdel and others'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -246,7 +246,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'CRTRunner', 'CRT Runner Documentation',
-   'Matthew Cox, Nick Smrdel and Others!', 'CRTRunner', 'One line description of project.',
+   'Matthew Cox, Nick Smrdel and others', 'CRTRunner', 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -261,3 +261,5 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+todo_include_todos = True

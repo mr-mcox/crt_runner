@@ -1,5 +1,2 @@
 *.pyc
 *.sublime-workspace
-_build
-_static
-_templates
