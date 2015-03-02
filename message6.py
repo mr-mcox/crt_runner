@@ -4,7 +4,7 @@ message = {
  'from_email': 'nicholas.smrdel@teachforamerica.org',
  'from_name': 'Nicholas Smrdel',
  'headers': {'Reply-To': 'nicholas.smrdel@teachforamerica.org'},
- 'html': """
+ 'html': """ 
 	 '<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="margin: 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #F2F2F2;height: 100% !important;width: 100% !important;">
 			<center>
 				<table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;margin: 0;padding: 0;background-color: #F2F2F2;height: 100% !important;width: 100% !important;">
@@ -37,7 +37,7 @@ message = {
 						
 							<td valign="top" class="mcnTextContent" style="padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 11px;line-height: 125%;text-align: left;">
 						
-								<a href="http://us3.campaign-archive2.com/?u=42e019658d1bc681a4dc07db0&id=5b8eab8f19&e=[UNIQID]" target="_blank" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-weight: normal;text-decoration: underline;">View this email in your browser</a>
+								<a href="http://us3.campaign-archive1.com/?u=42e019658d1bc681a4dc07db0&id=ab0dd022d8&e=38217127cc" target="_blank" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-weight: normal;text-decoration: underline;">View this email in your browser</a>
 							</td>
 						</tr>
 					</tbody></table>
@@ -56,20 +56,7 @@ message = {
 										<!-- BEGIN HEADER // -->
 										<table border="0" cellpadding="0" cellspacing="0" width="600" id="templateHeader" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FFFFFF;border-top: 0;border-bottom: 0;">
 											<tr>
-												<td valign="top" class="headerContainer" style="mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageBlock" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-		<tbody class="mcnImageBlockOuter">
-				<tr>
-					<td valign="top" style="padding: 9px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnImageBlockInner">
-						<table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" class="mcnImageContentContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-							<tbody><tr>
-								<td class="mcnImageContent" valign="top" style="padding-right: 9px;padding-left: 9px;padding-top: 0;padding-bottom: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-								</td>
-							</tr>
-						</tbody></table>
-					</td>
-				</tr>
-		</tbody>
-	</table></td>
+												<td valign="top" class="headerContainer" style="mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"></td>
 											</tr>
 										</table>
 										<!-- // END HEADER -->
@@ -132,15 +119,12 @@ message = {
 						
 							<td valign="top" class="mcnTextContent" style="padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 11px;line-height: 125%;text-align: left;">
 						
-								<em>Copyright © 2015 Teach For America, All rights reserved.</em>
+								<em>Copyright © 2015 Teach For America, All rights reserved.</em><br>
 	<br>
-
-		<br>
-		<br>
-		<a href="http://teachforamerica.us3.list-manage.com/unsubscribe?u=42e019658d1bc681a4dc07db0&id=09b9ae5013&e=[UNIQID]&c=5b8eab8f19" class="utilityLink" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-weight: normal;text-decoration: underline;">unsubscribe from this list</a>&nbsp;&nbsp;&nbsp;
-		<a href="http://teachforamerica.us3.list-manage.com/profile?u=42e019658d1bc681a4dc07db0&id=09b9ae5013&e=[UNIQID]" class="utilityLink" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-weight: normal;text-decoration: underline;">update subscription preferences</a>&nbsp;
-		<br>
-		<br>
+	<br>
+	<a class="utilityLink" href="http://teachforamerica.us3.list-manage1.com/unsubscribe?u=42e019658d1bc681a4dc07db0&id=09b9ae5013&e=38217127cc&c=ab0dd022d8" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-weight: normal;text-decoration: underline;">unsubscribe from this list</a>&nbsp;&nbsp;&nbsp; <a class="utilityLink" href="http://teachforamerica.us3.list-manage1.com/profile?u=42e019658d1bc681a4dc07db0&id=09b9ae5013&e=38217127cc" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-weight: normal;text-decoration: underline;">update subscription preferences</a>&nbsp;<br>
+	<br>
+	 <a href="http://www.mailchimp.com/monkey-rewards/?utm_source=freemium_newsletter&utm_medium=email&utm_campaign=monkey_rewards&aid=42e019658d1bc681a4dc07db0&afl=1"><img src="http://cdn-images.mailchimp.com/monkey_rewards/MC_MonkeyReward_15.png" border="0" alt="Email Marketing Powered by MailChimp" title="MailChimp Email Marketing" width="139" height="54"></a> 
 							</td>
 						</tr>
 					</tbody></table>
@@ -160,7 +144,7 @@ message = {
 					</tr>
 				</table>
 			</center>
-		</body>' """,
+		</body>' """,     
  'important': False,
  'subject': 'You are experiencing a collab buiding issue - next step inside',
  'tags': ['password-resets'],
