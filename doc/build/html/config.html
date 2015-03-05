@@ -48,9 +48,27 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="module-crt_runner.config">
-<span id="config"></span><h1>Config<a class="headerlink" href="#module-crt_runner.config" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+  <div class="section" id="config">
+<h1>Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="format-of-the-yaml-configuration-file">
+<h2>Format of the yaml configuration file<a class="headerlink" href="#format-of-the-yaml-configuration-file" title="Permalink to this headline">¶</a></h2>
+<p>The yaml file should include the following items:
+* path_to_perl_script
+* mandrill_api_key
+* from_email
+* email_from_name
+* institutes
+* cm_file_base_name
+* collab_file_base_name
+* user_settings_base_name</p>
+<div class="section" id="the-fields-expected-in-each-instiute-section">
+<h3>The fields expected in each instiute section:<a class="headerlink" href="#the-fields-expected-in-each-instiute-section" title="Permalink to this headline">¶</a></h3>
+<p>Each of these fields should be listed under the institute name:
+* ddm_name
+* ddm_email
+* path_to_folder
+* file_prefix</p>
+<span class="target" id="module-crt_runner.config"></span><dl class="class">
 <dt id="crt_runner.config.Config">
 <em class="property">class </em><tt class="descclassname">crt_runner.config.</tt><tt class="descname">Config</tt><big>(</big><em>config_file</em><big>)</big><a class="headerlink" href="#crt_runner.config.Config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provide configuration options for the CRT Runner</p>
@@ -67,14 +85,35 @@
 </table>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="crt_runner.config.Config.path_to_perl_script">
-<tt class="descname">path_to_perl_script</tt><a class="headerlink" href="#crt_runner.config.Config.path_to_perl_script" title="Permalink to this definition">¶</a></dt>
-<dd><p>Path to the perl script that can be executed</p>
+<dl class="method">
+<dt id="crt_runner.config.Config.info_by_institute">
+<tt class="descname">info_by_institute</tt><big>(</big><em>institute</em>, <em>field</em><big>)</big><a class="headerlink" href="#crt_runner.config.Config.info_by_institute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide requested information about the institute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>institute</strong> (<em>str</em>) &#8211; The institute information is desired for</li>
+<li><strong>field</strong> (<em>str</em>) &#8211; The field desired for the above institute</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The field value</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Raises AssertionError:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><p class="first last">if the institute or field is not in the config file</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
 
+</div>
+</div>
 </div>
 
 
@@ -83,6 +122,17 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Config</a><ul>
+<li><a class="reference internal" href="#format-of-the-yaml-configuration-file">Format of the yaml configuration file</a><ul>
+<li><a class="reference internal" href="#the-fields-expected-in-each-instiute-section">The fields expected in each instiute section:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="messenger.html"
                         title="previous chapter">Messenger</a></p>
