@@ -17,3 +17,8 @@ class Config(object):
     def path_to_perl_script(self):
         """Path to the perl script that can be executed"""
         return self._config['path_to_perl_script']
+
+    @property
+    def mandrill_api_key(self):
+        """Path to the perl script that can be executed"""
+        return self._config['mandrill_api_key']
