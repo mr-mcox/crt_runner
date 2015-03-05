@@ -16,7 +16,7 @@ class Config(object):
 
         # Create properties for the keys in the top level of the dictionary,
         # excluding certain special properties
-        special_props = set(['institute'])
+        special_props = set(['institute','emails'])
         topline_properties = list(set(self._config.keys()) - special_props)
         for prop in topline_properties:
             self._add_topline_property(prop)
@@ -43,3 +43,16 @@ class Config(object):
         assert institute in self._config['institutes']
         assert field in self._config['institutes'][institute]
         return self._config['institutes'][institute][field]
+
+    def email_text(self, email_type, field):
+        """Provide text for a specific type of email
+
+        :param str email_type: The email type that the information is desired for
+        :param str field: The field desired for the above email
+        :return: The field value
+        :raises AssertionError: if the email_type or field is not in the config file
+        """
+        assert 'emails' in self._config
+        assert email_type in self._config['emails']
+        assert field in self._config['emails'][email_type]
+        return self._config['emails'][email_type][field]
