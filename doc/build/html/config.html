@@ -48,34 +48,9 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="config">
-<h1>Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="format-of-the-yaml-configuration-file">
-<h2>Format of the yaml configuration file<a class="headerlink" href="#format-of-the-yaml-configuration-file" title="Permalink to this headline">¶</a></h2>
-<p>The yaml file should include the following items:
-* path_to_perl_script
-* mandrill_api_key
-* from_email
-* email_from_name
-* institutes
-* emails
-* cm_file_base_name
-* collab_file_base_name
-* user_settings_base_name</p>
-<div class="section" id="the-fields-expected-in-each-instiute-section">
-<h3>The fields expected in each instiute section:<a class="headerlink" href="#the-fields-expected-in-each-instiute-section" title="Permalink to this headline">¶</a></h3>
-<p>Each of these fields should be listed under the institute name:
-* ddm_name
-* ddm_email
-* path_to_folder
-* file_prefix</p>
-</div>
-<div class="section" id="the-fields-expected-in-each-emails-section">
-<h3>The fields expected in each emails section:<a class="headerlink" href="#the-fields-expected-in-each-emails-section" title="Permalink to this headline">¶</a></h3>
-<p>Each of these fields should be listed under the email type:
-* subject
-* body</p>
-<span class="target" id="module-crt_runner.config"></span><dl class="class">
+  <div class="section" id="module-crt_runner.config">
+<span id="config"></span><h1>Config<a class="headerlink" href="#module-crt_runner.config" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
 <dt id="crt_runner.config.Config">
 <em class="property">class </em><tt class="descclassname">crt_runner.config.</tt><tt class="descname">Config</tt><big>(</big><em>config_file</em><big>)</big><a class="headerlink" href="#crt_runner.config.Config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provide configuration options for the CRT Runner</p>
@@ -144,6 +119,37 @@
 
 </dd></dl>
 
+<div class="section" id="format-of-the-yaml-configuration-file">
+<h2>Format of the yaml configuration file<a class="headerlink" href="#format-of-the-yaml-configuration-file" title="Permalink to this headline">¶</a></h2>
+<p>The yaml file should include the following items:</p>
+<ul class="simple">
+<li>path_to_perl_script</li>
+<li>mandrill_api_key</li>
+<li>from_email</li>
+<li>email_from_name</li>
+<li>institutes</li>
+<li>emails</li>
+<li>cm_file_base_name</li>
+<li>collab_file_base_name</li>
+<li>user_settings_base_name</li>
+</ul>
+<div class="section" id="the-fields-expected-in-each-institute-section">
+<h3>The fields expected in each institute section:<a class="headerlink" href="#the-fields-expected-in-each-institute-section" title="Permalink to this headline">¶</a></h3>
+<p>Each of these fields should be listed under the institute name:</p>
+<ul class="simple">
+<li>ddm_name</li>
+<li>ddm_email</li>
+<li>path_to_folder</li>
+<li>file_prefix</li>
+</ul>
+</div>
+<div class="section" id="the-fields-expected-in-each-emails-section">
+<h3>The fields expected in each emails section:<a class="headerlink" href="#the-fields-expected-in-each-emails-section" title="Permalink to this headline">¶</a></h3>
+<p>Each of these fields should be listed under the email type:</p>
+<ul class="simple">
+<li>subject</li>
+<li>body</li>
+</ul>
 </div>
 </div>
 </div>
@@ -158,7 +164,7 @@
   <ul>
 <li><a class="reference internal" href="#">Config</a><ul>
 <li><a class="reference internal" href="#format-of-the-yaml-configuration-file">Format of the yaml configuration file</a><ul>
-<li><a class="reference internal" href="#the-fields-expected-in-each-instiute-section">The fields expected in each instiute section:</a></li>
+<li><a class="reference internal" href="#the-fields-expected-in-each-institute-section">The fields expected in each institute section:</a></li>
 <li><a class="reference internal" href="#the-fields-expected-in-each-emails-section">The fields expected in each emails section:</a></li>
 </ul>
 </li>

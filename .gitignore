@@ -1,3 +1,4 @@
 *.pyc
 *.sublime-workspace
 .cache
+.DS_Store

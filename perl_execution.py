@@ -31,7 +31,7 @@ class PerlCommand(object):
                          self.user_settings_file,
                          self.output_directory], stdout=self.log_file)
 
-    def run_crt_with_notifications(self):
+    def run_crt_with_notifications(self,institute="Atlanta"):
         """
         Run the CRT and notify send messages upon completion
         """
@@ -40,19 +40,19 @@ class PerlCommand(object):
         m.send_email(from_email=config.from_email,
                      from_name=config.email_from_name,
                      to_name=config.info_by_institute(
-                         'ATL', 'ddm_name'),
+                         'Atlanta', 'ddm_name'),
                      to_email=config.info_by_institute(
-                         'ATL', 'ddm_email'),
+                         'Atlanta', 'ddm_email'),
                      subject=config.email_text('crt_started', 'subject'),
                      body=config.email_text('crt_started', 'body'))
         self.run_crt()
-        log = CRTLog(self.log_file)
+        log = CRTLog(self.log_file,institute=institute)
         if log.successfully_completed:
             m.send_email(from_email=config.from_email,
                      from_name=config.email_from_name,
                      to_name=config.info_by_institute(
-                         'ATL', 'ddm_name'),
+                         institute, 'ddm_name'),
                      to_email=config.info_by_institute(
-                         'ATL', 'ddm_email'),
+                         institute, 'ddm_email'),
                      subject=config.email_text('crt_success', 'subject'),
                      body=config.email_text('crt_success', 'body'))
