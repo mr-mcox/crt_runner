@@ -43,9 +43,16 @@ class PerlCommand(object):
                          'ATL', 'ddm_name'),
                      to_email=config.info_by_institute(
                          'ATL', 'ddm_email'),
-                     subject="CRT Run begun",
-                     body="The CRT run has begun. Huzzah!")
+                     subject=config.email_text('crt_started', 'subject'),
+                     body=config.email_text('crt_started', 'body'))
         self.run_crt()
         log = CRTLog(self.log_file)
         if log.successfully_completed:
-            m.send_email('CRT Successfully completed!')
+            m.send_email(from_email=config.from_email,
+                     from_name=config.email_from_name,
+                     to_name=config.info_by_institute(
+                         'ATL', 'ddm_name'),
+                     to_email=config.info_by_institute(
+                         'ATL', 'ddm_email'),
+                     subject=config.email_text('crt_success', 'subject'),
+                     body=config.email_text('crt_success', 'body'))

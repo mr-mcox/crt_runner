@@ -9,17 +9,29 @@ import pytest
 @pytest.fixture
 def config():
 
-    def return_field(institute, value):
+    def return_institute_field(institute, value):
         if value == 'ddm_name':
             return 'William'
         if value == 'ddm_email':
             return 'william@gmail.com'
+    def return_email_field(email_type, value):
+      if email_type == 'crt_started':
+        if value == 'subject':
+            return 'The Start Subject'
+        if value == 'body':
+            return 'The start body'
+      if email_type == 'crt_success':
+        if value == 'subject':
+            return 'The Compl Subject'
+        if value == 'body':
+            return 'The Compl body'
 
     with patch('crt_runner.config.Config') as mock:
         instance = mock.return_value
         instance.from_email = 'nick@tfa.org'
         instance.email_from_name = 'Nick'
-        instance.info_by_institute = MagicMock(side_effect=return_field)
+        instance.info_by_institute = MagicMock(side_effect=return_institute_field)
+        instance.email_text = MagicMock(side_effect=return_email_field)
 
         return instance
 
@@ -52,7 +64,16 @@ def test_successful_run_results_sends_mesage(config):
             with patch.object(CRTLog, 'successfully_completed', return_value=True):
                 pc.run_crt_with_notifications()
 
-    send_email_mock.assert_called_with('CRT Successfully completed!')
+    send_email_mock.assert_any_call(from_email=config.from_email,
+                                    from_name=config.email_from_name,
+                                    to_name=config.info_by_institute(
+                                        'ATL', 'ddm_name'),
+                                    to_email=config.info_by_institute(
+                                        'ATL', 'ddm_email'),
+                                    subject=config.email_text(
+                                        'crt_started', 'subject'),
+                                    body=config.email_text(
+                                        'crt_started', 'body'))
 
 
 def test_send_message_when_run_starts(config):
@@ -68,5 +89,7 @@ def test_send_message_when_run_starts(config):
                                         'ATL', 'ddm_name'),
                                     to_email=config.info_by_institute(
                                         'ATL', 'ddm_email'),
-                                    subject="CRT Run begun",
-                                    body="The CRT run has begun. Huzzah!")
+                                    subject=config.email_text(
+                                        'crt_success', 'subject'),
+                                    body=config.email_text(
+                                        'crt_success', 'body'))
