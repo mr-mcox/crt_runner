@@ -1,6 +1,6 @@
 """
 .. module:: perl_execution
-	:synopsis: Handles the interface with the Perl CRT.pl command
+    :synopsis: Handles the interface with the Perl CRT.pl command
 """
 
 import subprocess
@@ -12,11 +12,11 @@ class PerlCommand(object):
 
     """Call the perl command"""
 
-    def __init__(self):
+    def __init__(self, config=None):
         """
-        There is nothing in the init process for the moment
+        Pass the config file for use
         """
-        pass
+        self.config = config
 
     def run_crt(self):
         """
@@ -35,9 +35,17 @@ class PerlCommand(object):
         """
         Run the CRT and notify send messages upon completion
         """
-
+        m = Messenger()
+        config = self.config
+        m.send_email(from_email=config.from_email,
+                     from_name=config.email_from_name,
+                     to_name=config.info_by_institute(
+                         'ATL', 'ddm_name'),
+                     to_email=config.info_by_institute(
+                         'ATL', 'ddm_email'),
+                     subject="CRT Run begun",
+                     body="The CRT run has begun. Huzzah!")
         self.run_crt()
         log = CRTLog(self.log_file)
         if log.successfully_completed:
-            m = Messenger()
             m.send_email('CRT Successfully completed!')
