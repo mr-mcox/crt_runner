@@ -37,3 +37,18 @@ def test_crt_warnings():
         c = Config('config.yaml')
     assert c.crt_warnings == [w['crt_warning']
                               for w in config_yaml['warnings']]
+
+
+def test_user_friendly_warnings():
+    config_yaml = {'warnings': [
+        {'crt_warning': 'Warning: No CMs listed in institute region',
+         'user_friendly_warning': "Hey! There aren't any CMS"},
+        {'crt_warning': 'Warning: Your music is too loud',
+         'user_friendly_warning': """The CRT is having trouble concentrating
+                                     with how loud your music is"""}
+    ]}
+    with patch('yaml.load', return_value=config_yaml):
+        c = Config('config.yaml')
+    for i, warning in enumerate(c.crt_warnings):
+        user_warning = config_yaml['warnings'][i]['user_friendly_warning']
+        c.user_friendly_warning(warning) == user_warning

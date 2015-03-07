@@ -16,7 +16,7 @@ class Config(object):
 
         # Create properties for the keys in the top level of the dictionary,
         # excluding certain special properties
-        special_props = set(['institute','emails','warnings'])
+        special_props = set(['institute', 'emails', 'warnings'])
         topline_properties = list(set(self._config.keys()) - special_props)
         for prop in topline_properties:
             self._add_topline_property(prop)
@@ -68,3 +68,11 @@ class Config(object):
         for item in self._config['warnings']:
             assert 'crt_warning' in item
         return [w['crt_warning'] for w in self._config['warnings']]
+
+    def user_friendly_warning(self, warning):
+
+        warning_dict = dict(zip(
+            [w['crt_warning'] for w in self._config['warnings']],
+            [w['user_friendly_warning'] for w in self._config['warnings']]
+        ))
+        return warning_dict[warning]
