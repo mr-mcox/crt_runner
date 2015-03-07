@@ -70,7 +70,16 @@ class Config(object):
         return [w['crt_warning'] for w in self._config['warnings']]
 
     def user_friendly_warning(self, warning):
+        """Provide user friendly warning for a given warning
 
+        :param str crt_warning: The warning regular expression string
+        :return: The user friendly text associated with that input warning
+        """
+        assert 'warnings' in self._config
+        assert type(self._config['warnings']) is list
+        for item in self._config['warnings']:
+            assert 'user_friendly_warning' in item
+            
         warning_dict = dict(zip(
             [w['crt_warning'] for w in self._config['warnings']],
             [w['user_friendly_warning'] for w in self._config['warnings']]
