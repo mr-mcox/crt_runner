@@ -26,12 +26,13 @@ class CRTLog(object):
     def send_emails_for_warnings(self):
         m = Messenger()
         config = self.config
-        if re.search('Warning: No CMs listed in institute region', self.log_contents) is not None:
-            m.send_email(from_email=config.from_email,
-                         from_name=config.email_from_name,
-                         to_name=config.info_by_institute(
-                             self.institute, 'ddm_name'),
-                         to_email=config.info_by_institute(
-                             self.institute, 'ddm_email'),
-                         subject=config.email_text('crt_warning', 'subject'),
-                         body=config.email_text('crt_warning', 'body'))
+        for warning in config.crt_warnings:
+            if re.search(warning, self.log_contents) is not None:
+                m.send_email(from_email=config.from_email,
+                             from_name=config.email_from_name,
+                             to_name=config.info_by_institute(
+                                 self.institute, 'ddm_name'),
+                             to_email=config.info_by_institute(
+                                 self.institute, 'ddm_email'),
+                             subject=config.email_text('crt_warning', 'subject'),
+                             body=config.email_text('crt_warning', config.user_friendly_warning))

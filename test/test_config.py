@@ -21,8 +21,19 @@ def test_lookup_info_by_institute():
 
 def test_lookup_email_by_type():
     config_yaml = {'emails': {'crt_started': {'subject': 'CRT started!',
-                                           'body': 'It has begun'}}}
+                                              'body': 'It has begun'}}}
     with patch('yaml.load', return_value=config_yaml):
         c = Config('config.yaml')
     started_subject = config_yaml['emails']['crt_started']['subject']
     assert c.email_text('crt_started', 'subject') == started_subject
+
+
+def test_crt_warnings():
+    config_yaml = {'warnings': [
+        {'crt_warning': 'Warning: No CMs listed in institute region',
+         'user_friendly_warning': "Hey! There aren't any CMS"}
+    ]}
+    with patch('yaml.load', return_value=config_yaml):
+        c = Config('config.yaml')
+    assert c.crt_warnings == [w['crt_warning']
+                              for w in config_yaml['warnings']]
