@@ -61,14 +61,21 @@ def config_with_multiple_warnings():
 @pytest.fixture
 def config_variable_warning():
     crt_warnings = [
-        'Warning: (.*) column not found in CM input file (but its not needed for this program to run)']
+        'Warning: (.*) column not found in CM input file',
+        'Expected (.*) CMs but (.*) were found']
 
-    user_friendly_warning = "Just so you know, column X is not there"
+    def user_friendly_warnings(warning):
+        if warning == crt_warnings[0]:
+            return "Just so you know, column X is not there"
+        if warning == crt_warnings[1]:
+            return "You need X CMs but there were X"
+
 
     with patch('crt_runner.config.Config') as mock:
         instance = mock.return_value
         instance.crt_warnings = crt_warnings
-        instance.user_friendly_warning = user_friendly_warning
+        instance.user_friendly_warning = MagicMock(
+            side_effect=user_friendly_warnings)
 
         return instance
 
@@ -104,6 +111,7 @@ def log_file_with_warning(request):
     file_contents = """
     Warning: No CMs listed in institute region
     Here is another warning
+    Expected 500 CMs but 3 were found
     Warning: Collab request column not found in CM input file (but its not needed for this program to run)
     We need between 377 and 410 CMs to fill collabs and there are 402 CMs
     Collab builder has successfully completed. Please open the output files for the suggested CM placements.
@@ -132,6 +140,37 @@ def test_generate_list_of_warnings_from_log_file(log_file_with_warning,
             expected_warnings.append(config.user_friendly_warning(warning))
 
     assert set(expected_warnings) == set(log.warnings_in_log())
+
+
+def test_list_of_warnings_with_variable_elements(log_file_with_warning,
+                                                 config_variable_warning):
+    config = config_variable_warning
+    log = CRTLog(log_file_with_warning, config=config, institute='Atlanta')
+    expected_warnings = list()
+
+    exp_warning = config.crt_warnings[0]
+    exp_substitution = re.search(
+        exp_warning, log.log_contents).group(1)
+    friendly_warning_pattern = config.user_friendly_warning(exp_warning)
+    exp_output = re.sub(r"\b(X)\b", exp_substitution, friendly_warning_pattern)
+    assert exp_output in log.warnings_in_log()
+
+def test_list_of_warnings_with_multiple_variable_elements(log_file_with_warning,
+                                                 config_variable_warning):
+    config = config_variable_warning
+    log = CRTLog(log_file_with_warning, config=config, institute='Atlanta')
+    expected_warnings = list()
+
+    exp_warning = config.crt_warnings[1]
+    exp_substitution_a = re.search(
+        exp_warning, log.log_contents).group(1)
+    exp_substitution_b = re.search(
+        exp_warning, log.log_contents).group(2)
+    friendly_warning_pattern = config.user_friendly_warning(exp_warning)
+    exp_output_a = re.sub(r"\b(X)\b", exp_substitution_a, friendly_warning_pattern,count=1)
+    exp_output_b = re.sub(r"\b(X)\b", exp_substitution_b, exp_output_a,count=1)
+    assert exp_output_b in log.warnings_in_log()
+
 
 # def test_send_message_with_variable_elements(log_file_with_warning, config_variable_warning):
 #     l = CRTLog(log_file_with_warning, config=config, institute='Atlanta')
