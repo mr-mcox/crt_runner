@@ -79,7 +79,7 @@ class Config(object):
         assert type(self._config['warnings']) is list
         for item in self._config['warnings']:
             assert 'user_friendly_warning' in item
-            
+
         warning_dict = dict(zip(
             [w['crt_warning'] for w in self._config['warnings']],
             [w['user_friendly_warning'] for w in self._config['warnings']]

@@ -36,3 +36,10 @@ class CRTLog(object):
                                  self.institute, 'ddm_email'),
                              subject=config.email_text('crt_warning', 'subject'),
                              body=config.email_text('crt_warning', config.user_friendly_warning))
+    def warnings_in_log(self):
+        warning_list = list()
+        config = self.config
+        for warning in config.crt_warnings:
+            if re.search(warning, self.log_contents) is not None:
+                warning_list.append(config.user_friendly_warning(warning))
+        return warning_list

@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
 import os
+import re
 from ..crt_log import CRTLog
 from ..messenger import Messenger
 
@@ -37,6 +38,37 @@ def config():
 
         return instance
 
+@pytest.fixture
+def config_with_multiple_warnings():
+    crt_warnings = ['Warning: No CMs listed in institute region',
+                    'Here is another warning']
+    def user_friendly_warnings(warning):
+        if warning == crt_warnings[0]:
+            return "Hey! There aren't any CMS"
+        if warning == crt_warnings[1]:
+            return "Another friendly warning"
+
+    with patch('crt_runner.config.Config') as mock:
+        instance = mock.return_value
+        instance.crt_warnings = crt_warnings
+        instance.user_friendly_warning = MagicMock(
+            side_effect=user_friendly_warnings)
+        return instance
+
+
+@pytest.fixture
+def config_variable_warning():
+    crt_warnings = ['Warning: (.*) column not found in CM input file (but its not needed for this program to run)']
+
+    user_friendly_warning = "Just so you know, column X is not there"
+
+    with patch('crt_runner.config.Config') as mock:
+        instance = mock.return_value
+        instance.crt_warnings = crt_warnings
+        instance.user_friendly_warning = user_friendly_warning
+
+        return instance
+
 
 @pytest.fixture
 def successfully_completed_log_file(request):
@@ -68,6 +100,8 @@ def log_file_with_warning(request):
     f = open('log_file.txt', 'w')
     file_contents = """
     Warning: No CMs listed in institute region
+    Here is another warning
+    Warning: Collab request column not found in CM input file (but its not needed for this program to run)
     We need between 377 and 410 CMs to fill collabs and there are 402 CMs
     Collab builder has successfully completed. Please open the output files for the suggested CM placements.
     """
@@ -101,3 +135,17 @@ def test_send_message_based_on_config_match_string(log_file_with_warning, config
                                         'crt_warning', 'subject'),
                                     body=config.email_text(
                                         'crt_warning', config.user_friendly_warning))
+
+def test_generate_list_of_warnings_from_log_file(log_file_with_warning,config_with_multiple_warnings):
+    log = CRTLog(log_file_with_warning, config=config_with_multiple_warnings, institute='Atlanta')
+    expected_warnings = list()
+    for warning in config_with_multiple_warnings.crt_warnings:
+        if re.search(warning,log.log_contents) is not None:
+            expected_warnings.append(config_with_multiple_warnings.user_friendly_warning(warning))
+
+    assert set(expected_warnings) == set(log.warnings_in_log())
+
+# def test_send_message_with_variable_elements(log_file_with_warning, config_variable_warning):
+#     l = CRTLog(log_file_with_warning, config=config, institute='Atlanta')
+#     with patch.object(Messenger, 'send_email') as send_email_mock:
+#         l.send_emails_for_warnings()
