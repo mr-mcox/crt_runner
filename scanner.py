@@ -16,6 +16,7 @@ class Scanner(object):
         self.canary_file = 'placement_reccomendations_and_cm_level_scoring.xls'
         self.perl_command = PerlCommand()
         self.config = config
+        self.files_to_check = ['cm', 'collab', 'user_settings']
 
     def scan_folder(self, folder):
         """Run CRT command if canary file missing from identified folder
@@ -41,10 +42,9 @@ class Scanner(object):
         return path
 
     def send_message_for_missing_files(self, institute=None):
-        files_to_check = ['cm', 'collab', 'user_settings']
         config = self.config
 
-        for f in files_to_check:
+        for f in self.files_to_check:
             path = self.path_for_file(institute, f)
             if not os.path.isfile(path):
                 m = Messenger()
@@ -59,3 +59,10 @@ class Scanner(object):
                              subject=config.email_text(
                                  'file_missing', 'subject'),
                              body=email_body)
+
+    def has_all_required_files(self, institute=None):
+        for f in self.files_to_check:
+            path = self.path_for_file(institute, f)
+            if not os.path.isfile(path):
+                return False
+        return True

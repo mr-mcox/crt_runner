@@ -93,7 +93,6 @@ def config_for_missing_file_message():
 
 def test_send_message_for_missing_file(missing_cm_file_setup,
                                        config_for_missing_file_message):
-    config = config_for_missing_file_message
 
     def return_file_path(institute, f):
         if f == 'cm':
@@ -102,20 +101,34 @@ def test_send_message_for_missing_file(missing_cm_file_setup,
             return 'collab_file.xls'
         if f == 'user_settings':
             return 'user_settings.txt'
+    config = config_for_missing_file_message
 
     with patch.object(Scanner, 'path_for_file', side_effect=return_file_path):
         with patch.object(Messenger, 'send_email') as send_email_mock:
             s = Scanner(config=config)
             s.send_message_for_missing_files('ATL')
             expected_body = re.sub('FILE_PATH',
-                                   s.path_for_file('ATL','cm'),
+                                   s.path_for_file('ATL', 'cm'),
                                    config.email_text('file_missing', 'body'))
     send_email_mock.assert_called_with(from_email=config.from_email,
-                                    from_name=config.email_from_name,
-                                    to_name=config.info_by_institute(
-                                        'ATL', 'ddm_name'),
-                                    to_email=config.info_by_institute(
-                                        'ATL', 'ddm_email'),
-                                    subject=config.email_text(
-                                        'file_missing', 'subject'),
-                                    body=expected_body)
+                                       from_name=config.email_from_name,
+                                       to_name=config.info_by_institute(
+                                           'ATL', 'ddm_name'),
+                                       to_email=config.info_by_institute(
+                                           'ATL', 'ddm_email'),
+                                       subject=config.email_text(
+                                           'file_missing', 'subject'),
+                                       body=expected_body)
+
+
+def test_has_all_required_files(missing_cm_file_setup):
+    def return_file_path(institute, f):
+        if f == 'cm':
+            return 'cm_file.xls'
+        if f == 'collab':
+            return 'collab_file.xls'
+        if f == 'user_settings':
+            return 'user_settings.txt'
+    with patch.object(Scanner, 'path_for_file', side_effect=return_file_path):
+        s = Scanner()
+        assert s.has_all_required_files(institute='ATL') == False
