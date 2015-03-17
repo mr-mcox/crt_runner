@@ -67,6 +67,20 @@
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="crt_runner.config.Config.crt_warnings">
+<tt class="descname">crt_warnings</tt><a class="headerlink" href="#crt_runner.config.Config.crt_warnings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide list of crt warnings from config file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of regular expression search strings</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="crt_runner.config.Config.email_text">
 <tt class="descname">email_text</tt><big>(</big><em>email_type</em>, <em>field</em><big>)</big><a class="headerlink" href="#crt_runner.config.Config.email_text" title="Permalink to this definition">¶</a></dt>
@@ -117,6 +131,22 @@
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="crt_runner.config.Config.user_friendly_warning">
+<tt class="descname">user_friendly_warning</tt><big>(</big><em>warning</em><big>)</big><a class="headerlink" href="#crt_runner.config.Config.user_friendly_warning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide user friendly warning for a given warning</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>crt_warning</strong> (<em>str</em>) &#8211; The warning regular expression string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The user friendly text associated with that input warning</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <div class="section" id="format-of-the-yaml-configuration-file">
@@ -132,6 +162,7 @@
 <li>cm_file_base_name</li>
 <li>collab_file_base_name</li>
 <li>user_settings_base_name</li>
+<li>warnings</li>
 </ul>
 <div class="section" id="the-fields-expected-in-each-institute-section">
 <h3>The fields expected in each institute section:<a class="headerlink" href="#the-fields-expected-in-each-institute-section" title="Permalink to this headline">¶</a></h3>
@@ -151,6 +182,44 @@
 <li>body</li>
 </ul>
 </div>
+<div class="section" id="format-of-the-warnings-section">
+<h3>Format of the warnings section:<a class="headerlink" href="#format-of-the-warnings-section" title="Permalink to this headline">¶</a></h3>
+<p>This should be a list where each field has the following entries:</p>
+<ul class="simple">
+<li>crt_warning</li>
+<li>user_friendly_warning</li>
+</ul>
+<p>The crt_warning section can have regular expression groups eg (.*) . These captured groups will be substituted for the character X in the associated user_friendly_warning</p>
+</div>
+<div class="section" id="example-yaml-file">
+<h3>Example YAML file<a class="headerlink" href="#example-yaml-file" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">path_to_perl_script</span><span class="p-Indicator">:</span> <span class="s">&#39;/path/to/script&#39;</span>
+<span class="l-Scalar-Plain">mandrill_api_key</span><span class="p-Indicator">:</span> <span class="s">&#39;API</span><span class="nv"> </span><span class="s">SECRET&#39;</span>
+<span class="l-Scalar-Plain">from_email</span><span class="p-Indicator">:</span> <span class="s">&#39;national@tfa.org&#39;</span>
+<span class="l-Scalar-Plain">from_name</span><span class="p-Indicator">:</span> <span class="s">&#39;National</span><span class="nv"> </span><span class="s">Overloard&#39;</span>
+<span class="l-Scalar-Plain">cm_file_base_name</span><span class="p-Indicator">:</span> <span class="s">&#39;_CMs.xls&#39;</span>
+<span class="l-Scalar-Plain">collab_file_base_name</span><span class="p-Indicator">:</span> <span class="s">&#39;_collabs.xls&#39;</span>
+<span class="l-Scalar-Plain">user_settings_base_name</span><span class="p-Indicator">:</span> <span class="s">&#39;_user_settings.txt&#39;</span>
+<span class="l-Scalar-Plain">emails</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">sample_email</span><span class="p-Indicator">:</span>
+                <span class="l-Scalar-Plain">subject</span><span class="p-Indicator">:</span> <span class="s">&quot;email</span><span class="nv"> </span><span class="s">subject&quot;</span>
+                <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span> <span class="s">&quot;email</span><span class="nv"> </span><span class="s">body&quot;</span>
+<span class="l-Scalar-Plain">institutes</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">Atlanta</span><span class="p-Indicator">:</span>
+                <span class="l-Scalar-Plain">ddm_name</span><span class="p-Indicator">:</span> <span class="s">&quot;Nick&quot;</span>
+                <span class="l-Scalar-Plain">ddm_email</span><span class="p-Indicator">:</span> <span class="s">&quot;ddm.nick@gmail.com&quot;</span>
+                <span class="l-Scalar-Plain">path_to_folder</span><span class="p-Indicator">:</span> <span class="s">&#39;path/to/folder&#39;</span>
+                <span class="l-Scalar-Plain">file_prefix</span><span class="p-Indicator">:</span> <span class="s">&#39;ATL&#39;</span>
+<span class="l-Scalar-Plain">warnings</span><span class="p-Indicator">:</span>
+        <span class="p-Indicator">-</span>
+                <span class="l-Scalar-Plain">crt_warning</span><span class="p-Indicator">:</span> <span class="s">&#39;Sample</span><span class="nv"> </span><span class="s">warning&#39;</span>
+                <span class="l-Scalar-Plain">user_friendly_warning</span><span class="p-Indicator">:</span> <span class="s">&#39;Warning</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">displayed&#39;</span>
+        <span class="p-Indicator">-</span>
+                <span class="l-Scalar-Plain">crt_warning</span><span class="p-Indicator">:</span> <span class="s">&#39;Warning</span><span class="nv"> </span><span class="s">about</span><span class="nv"> </span><span class="s">(.*)</span><span class="nv"> </span><span class="s">CMs&#39;</span>
+                <span class="l-Scalar-Plain">user_friendly_warning</span><span class="p-Indicator">:</span> <span class="s">&#39;Display</span><span class="nv"> </span><span class="s">warning</span><span class="nv"> </span><span class="s">about</span><span class="nv"> </span><span class="s">X</span><span class="nv"> </span><span class="s">CMs&#39;</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
@@ -166,6 +235,8 @@
 <li><a class="reference internal" href="#format-of-the-yaml-configuration-file">Format of the yaml configuration file</a><ul>
 <li><a class="reference internal" href="#the-fields-expected-in-each-institute-section">The fields expected in each institute section:</a></li>
 <li><a class="reference internal" href="#the-fields-expected-in-each-emails-section">The fields expected in each emails section:</a></li>
+<li><a class="reference internal" href="#format-of-the-warnings-section">Format of the warnings section:</a></li>
+<li><a class="reference internal" href="#example-yaml-file">Example YAML file</a></li>
 </ul>
 </li>
 </ul>

@@ -56,11 +56,11 @@
 <span id="crt-log"></span><h1>CRT Log<a class="headerlink" href="#module-crt_runner.crt_log" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="crt_runner.crt_log.CRTLog">
-<em class="property">class </em><tt class="descclassname">crt_runner.crt_log.</tt><tt class="descname">CRTLog</tt><big>(</big><em>log_file_handle</em><big>)</big><a class="headerlink" href="#crt_runner.crt_log.CRTLog" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">crt_runner.crt_log.</tt><tt class="descname">CRTLog</tt><big>(</big><em>log_file_handle</em>, <em>institute='Atlanta'</em>, <em>config=None</em><big>)</big><a class="headerlink" href="#crt_runner.crt_log.CRTLog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identify components of CRT run based on log results</p>
 <dl class="method">
 <dt id="crt_runner.crt_log.CRTLog.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>log_file_handle</em><big>)</big><a class="headerlink" href="#crt_runner.crt_log.CRTLog.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>log_file_handle</em>, <em>institute='Atlanta'</em>, <em>config=None</em><big>)</big><a class="headerlink" href="#crt_runner.crt_log.CRTLog.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -71,10 +71,46 @@
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="crt_runner.crt_log.CRTLog.send_warnings_message">
+<tt class="descname">send_warnings_message</tt><big>(</big><big>)</big><a class="headerlink" href="#crt_runner.crt_log.CRTLog.send_warnings_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send message based on warnings in the log</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Only sends message when there is at least one warning to send.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Expects there to be a crt_warning message in config</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Expects the body of the message to have the text WARNINGS_LIST</p>
+</div>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="crt_runner.crt_log.CRTLog.successfully_completed">
 <tt class="descname">successfully_completed</tt><a class="headerlink" href="#crt_runner.crt_log.CRTLog.successfully_completed" title="Permalink to this definition">¶</a></dt>
 <dd><p>True if the log file indicates that the run completed successfully</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="crt_runner.crt_log.CRTLog.warnings_in_log">
+<tt class="descname">warnings_in_log</tt><big>(</big><big>)</big><a class="headerlink" href="#crt_runner.crt_log.CRTLog.warnings_in_log" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all warnings present in log</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of strings of user friendly warnings</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">source of warnings is from the config object</p>
+</div>
 </dd></dl>
 
 </dd></dl>
