@@ -1,5 +1,7 @@
 from .perl_execution import PerlCommand
 import os.path
+import re
+from .messenger import Messenger
 
 
 class Scanner(object):
@@ -37,3 +39,23 @@ class Scanner(object):
             config.info_by_institute(institute, 'file_prefix'),
             base_name_map[file]])
         return path
+
+    def send_message_for_missing_files(self, institute=None):
+        files_to_check = ['cm', 'collab', 'user_settings']
+        config = self.config
+
+        for f in files_to_check:
+            path = self.path_for_file(institute, f)
+            if not os.path.isfile(path):
+                m = Messenger()
+                email_body = re.sub('FILE_PATH', path,
+                                    config.email_text('file_missing', 'body'))
+                m.send_email(from_email=config.from_email,
+                             from_name=config.email_from_name,
+                             to_name=config.info_by_institute(
+                                 institute, 'ddm_name'),
+                             to_email=config.info_by_institute(
+                                 institute, 'ddm_email'),
+                             subject=config.email_text(
+                                 'file_missing', 'subject'),
+                             body=email_body)
