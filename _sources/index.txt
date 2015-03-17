@@ -13,6 +13,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   include_readme
    scanner
    perl_execution
    crt_log
