@@ -1,6 +1,7 @@
 import re
 from .messenger import Messenger
 
+
 def next_sub(sub_iter):
     return next(sub_iter)
 
@@ -27,19 +28,30 @@ class CRTLog(object):
         else:
             return False
 
-    # def send_emails_for_warnings(self):
-    #     m = Messenger()
-    #     config = self.config
-    #     for warning in config.crt_warnings:
-    #         if re.search(warning, self.log_contents) is not None:
-    #             m.send_email(from_email=config.from_email,
-    #                          from_name=config.email_from_name,
-    #                          to_name=config.info_by_institute(
-    #                              self.institute, 'ddm_name'),
-    #                          to_email=config.info_by_institute(
-    #                              self.institute, 'ddm_email'),
-    #                          subject=config.email_text('crt_warning', 'subject'),
-    # body=config.email_text('crt_warning', config.user_friendly_warning))
+    def send_warnings_message(self):
+        """
+        Send message based on warnings in the log
+
+        .. note:: Only sends message when there is at least one warning to send.
+        .. note:: Expects there to be a crt_warning message in config
+        .. note:: Expects the body of the message to have the text WARNINGS_LIST
+        """
+        warning_list = self.warnings_in_log()
+        if len(warning_list) > 0:
+            m = Messenger()
+            config = self.config
+            joined_warnings = "\n".join(warning_list)
+            full_body = re.sub('WARNINGS_LIST', joined_warnings,
+                               config.email_text('crt_warning', 'body'))
+            m.send_email(from_email=config.from_email,
+                         from_name=config.email_from_name,
+                         to_name=config.info_by_institute(
+                             self.institute, 'ddm_name'),
+                         to_email=config.info_by_institute(
+                             self.institute, 'ddm_email'),
+                         subject=config.email_text('crt_warning', 'subject'),
+                         body=full_body)
+
 
     def warnings_in_log(self):
         """
@@ -82,7 +94,5 @@ class CRTLog(object):
             else:
                 return [config.user_friendly_warning(warning)]
         else:
-            #Return empty list if no matches found
+            # Return empty list if no matches found
             return list()
-
-
