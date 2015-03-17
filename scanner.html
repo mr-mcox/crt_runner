@@ -56,15 +56,52 @@
 <span id="scanner"></span><h1>Scanner<a class="headerlink" href="#module-crt_runner.scanner" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="crt_runner.scanner.Scanner">
-<em class="property">class </em><tt class="descclassname">crt_runner.scanner.</tt><tt class="descname">Scanner</tt><a class="headerlink" href="#crt_runner.scanner.Scanner" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">crt_runner.scanner.</tt><tt class="descname">Scanner</tt><big>(</big><em>config=None</em><big>)</big><a class="headerlink" href="#crt_runner.scanner.Scanner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scan folders to determine whether CRT should be run</p>
 <dl class="method">
 <dt id="crt_runner.scanner.Scanner.__init__">
-<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="headerlink" href="#crt_runner.scanner.Scanner.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>config=None</em><big>)</big><a class="headerlink" href="#crt_runner.scanner.Scanner.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition-todo admonition" id="index-0">
 <p class="first admonition-title">Todo</p>
 <p class="last">Canary file should be replaced with more sophisticated run condtions</p>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="crt_runner.scanner.Scanner.has_all_required_files">
+<tt class="descname">has_all_required_files</tt><big>(</big><em>institute=None</em><big>)</big><a class="headerlink" href="#crt_runner.scanner.Scanner.has_all_required_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicate wheter all required files are present</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>institute</strong> (<em>str</em>) &#8211; The institute to run this for</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return bool:</th><td class="field-body">True if all files are present, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="crt_runner.scanner.Scanner.path_for_file">
+<tt class="descname">path_for_file</tt><big>(</big><em>institute=None</em>, <em>file=None</em><big>)</big><a class="headerlink" href="#crt_runner.scanner.Scanner.path_for_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create path for given file type and institute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>institute</strong> (<em>str</em>) &#8211; Institute file needed for</li>
+<li><strong>file</strong> (<em>srt</em>) &#8211; Type of file. Accepted values are &#8216;cm&#8217;,&#8217;collab&#8217; and &#8216;user_settings&#8217;</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return str:</th><td class="field-body"><p class="first last">Path to expected file</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -76,6 +113,20 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>folder</strong> (<em>str</em>) &#8211; Path to the folder to scan for the canary file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="crt_runner.scanner.Scanner.send_message_for_missing_files">
+<tt class="descname">send_message_for_missing_files</tt><big>(</big><em>institute=None</em><big>)</big><a class="headerlink" href="#crt_runner.scanner.Scanner.send_message_for_missing_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send message for each missing file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>institute</strong> (<em>str</em>) &#8211; The institute to run this for</td>
 </tr>
 </tbody>
 </table>
