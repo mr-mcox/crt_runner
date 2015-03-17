@@ -59,12 +59,12 @@ Example YAML file
 	user_settings_base_name: '_user_settings.txt'
 	emails:
 		sample_email:
-			subject: "email subject"
-			body: "email body"
+			subject: 'email subject'
+			body: 'email body'
 	institutes:
 		Atlanta:
-			ddm_name: "Nick"
-			ddm_email: "ddm.nick@gmail.com"
+			ddm_name: 'Nick'
+			ddm_email: 'ddm.nick@gmail.com'
 			path_to_folder: 'path/to/folder'
 			file_prefix: 'ATL'
 	warnings:
