@@ -29,6 +29,13 @@ class Scanner(object):
             self.perl_command.run_crt()
 
     def path_for_file(self, institute=None, file=None):
+        """Create path for given file type and institute
+
+        :param str institute: Institute file needed for
+        :param srt file: Type of file. Accepted values are 'cm','collab' and 'user_settings'
+        :return str: Path to expected file
+        """
+
         config = self.config
         base_name_map = {
             'collab': config.collab_file_base_name,
@@ -42,6 +49,10 @@ class Scanner(object):
         return path
 
     def send_message_for_missing_files(self, institute=None):
+        """Send message for each missing file
+
+        :param str institute: The institute to run this for
+        """
         config = self.config
 
         for f in self.files_to_check:
@@ -61,6 +72,11 @@ class Scanner(object):
                              body=email_body)
 
     def has_all_required_files(self, institute=None):
+        """Indicate wheter all required files are present
+
+        :param str institute: The institute to run this for
+        :return bool: True if all files are present, False otherwise
+        """
         for f in self.files_to_check:
             path = self.path_for_file(institute, f)
             if not os.path.isfile(path):
