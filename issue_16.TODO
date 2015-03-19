@@ -1,0 +1,11 @@
+ ✔ Set up initial authentication using auth and refresh tokens specified in config @done (15-03-18 20:36)
+ ☐ Find master folder on box
+ ☐ For each institute, return Box folder
+ ☐ For institute, return folder (and create if necessary)
+ ☐ Create sync modified_at yaml
+ ☐ For folder, download files where local file doesn't exist
+ ☐ For folder, download files where modified_at is greater than local
+ ☐ For folder, upload files that don't exit yet
+ ☐ For folder, update files where local modified_at is greater than Box
+ ☐ Dump sync modified_at at the end of sync
+ ☐ Archive sanitized version of box_sync.py in case I need to use it later
