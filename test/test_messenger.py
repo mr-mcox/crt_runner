@@ -10,7 +10,7 @@ def mocked_client():
     m_send_mock = MagicMock()
     with patch('mandrill.Mandrill', return_value=mandrill_client_mock):
         with patch.object(Config, 'mandrill_api_key'):
-            m = Messenger()
+            m = Messenger(config=Config())
             mandrill_client_mock.messages.send = m_send_mock
     return {'client': m, 'send_mock': m_send_mock}
 
@@ -74,5 +74,5 @@ def test_variable_parameters_of_message():
 def test_client_uses_config_api_key():
     with patch('mandrill.Mandrill') as mandrill_mock:
         with patch.object(Config, 'mandrill_api_key') as api_mock:
-            Messenger()
+            Messenger(config=Config())
     mandrill_mock.assert_called_with(api_mock)

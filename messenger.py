@@ -4,7 +4,7 @@ class Messenger(object):
 
     """Coordinates the sending of messages"""
 
-    def __init__(self):
+    def __init__(self,config=None):
         
 
     def send_email(self, message):
