@@ -16,9 +16,14 @@ class Messenger(object):
                    to_email=None,
                    subject=None,
                    body=None):
-        """Stub for sending email
+        """Sends an email message
 
-        .. todo:: This function should send an email to a particular address
+        :param str from_name: Human name of the person the message appears to come from
+        :param str from_email: Email address of the person the message appears to come from
+        :param str to_name: Human name of the recipient
+        :param str to_email: Email of the recipient
+        :param str subject: Subject of the email
+        :param str body: Contents of the email
         """
         self.mandrill_client.messages.send(message={'important': False,
                                                     'tags': ['password-resets'],
