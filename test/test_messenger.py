@@ -14,7 +14,6 @@ def mocked_client():
             mandrill_client_mock.messages.send = m_send_mock
     return {'client': m, 'send_mock': m_send_mock}
 
-
 def test_non_variable_parameters_of_message(mocked_client):
     client = mocked_client['client']
     client.send_email()

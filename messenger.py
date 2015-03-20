@@ -1,3 +1,5 @@
+import mandrill
+
 from .config import Config
 import mandrill
 
