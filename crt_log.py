@@ -38,7 +38,7 @@ class CRTLog(object):
         """
         warning_list = self.warnings_in_log()
         if len(warning_list) > 0:
-            m = Messenger()
+            m = Messenger(self.config)
             config = self.config
             joined_warnings = "\n".join(warning_list)
             full_body = re.sub('WARNINGS_LIST', joined_warnings,

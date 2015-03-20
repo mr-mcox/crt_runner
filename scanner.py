@@ -58,7 +58,7 @@ class Scanner(object):
         for f in self.files_to_check:
             path = self.path_for_file(institute, f)
             if not os.path.isfile(path):
-                m = Messenger()
+                m = Messenger(config)
                 email_body = re.sub('FILE_PATH', path,
                                     config.email_text('file_missing', 'body'))
                 m.send_email(from_email=config.from_email,

@@ -35,8 +35,8 @@ class PerlCommand(object):
         """
         Run the CRT and notify send messages upon completion
         """
-        m = Messenger()
         config = self.config
+        m = Messenger(config)
         m.send_email(from_email=config.from_email,
                      from_name=config.email_from_name,
                      to_name=config.info_by_institute(
