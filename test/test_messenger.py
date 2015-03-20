@@ -10,12 +10,11 @@ def mocked_client():
     m_send_mock = MagicMock()
     with patch('mandrill.Mandrill', return_value=mandrill_client_mock):
         with patch.object(Config, 'mandrill_api_key'):
-            m = Messenger(config=Config())
+            m = Messenger(config=Config('file.yaml'))
             mandrill_client_mock.messages.send = m_send_mock
     return {'client': m, 'send_mock': m_send_mock}
 
 
-@pytest.mark.xfail
 def test_non_variable_parameters_of_message(mocked_client):
     client = mocked_client['client']
     client.send_email()
@@ -25,9 +24,7 @@ def test_non_variable_parameters_of_message(mocked_client):
     assert mocked_message['important'] == False
     assert mocked_message['tags'] == ['password-resets']
 
-
-@pytest.mark.xfail
-def test_variable_parameters_of_message():
+def test_variable_parameters_of_message(mocked_client):
     client = mocked_client['client']
     client.send_email()
     send_mock = mocked_client['send_mock']
@@ -69,10 +66,8 @@ def test_variable_parameters_of_message():
                                          'type':'to'
                                          }]
 
-
-@pytest.mark.xfail
 def test_client_uses_config_api_key():
     with patch('mandrill.Mandrill') as mandrill_mock:
         with patch.object(Config, 'mandrill_api_key') as api_mock:
-            Messenger(config=Config())
+            Messenger(config=Config('file.yaml'))
     mandrill_mock.assert_called_with(api_mock)
