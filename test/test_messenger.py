@@ -10,15 +10,15 @@ def mocked_client():
     m_send_mock = MagicMock()
     with patch('mandrill.Mandrill', return_value=mandrill_client_mock):
         with patch.object(Config, 'mandrill_api_key'):
-            m = Messenger(config=Config())
+            m = Messenger(config=Config("config.test"))
             mandrill_client_mock.messages.send = m_send_mock
     return {'client': m, 'send_mock': m_send_mock}
 
 
-@pytest.mark.xfail
+
 def test_non_variable_parameters_of_message(mocked_client):
     client = mocked_client['client']
-    client.send_email()
+    client.send_email(message={})
     send_mock = mocked_client['send_mock']
     assert send_mock.called
     mocked_message = send_mock.call_args[1]['message']
