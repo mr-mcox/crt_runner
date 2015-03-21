@@ -56,16 +56,28 @@
 <span id="messenger"></span><h1>Messenger<a class="headerlink" href="#module-crt_runner.messenger" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="crt_runner.messenger.Messenger">
-<em class="property">class </em><tt class="descclassname">crt_runner.messenger.</tt><tt class="descname">Messenger</tt><a class="headerlink" href="#crt_runner.messenger.Messenger" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">crt_runner.messenger.</tt><tt class="descname">Messenger</tt><big>(</big><em>config=None</em><big>)</big><a class="headerlink" href="#crt_runner.messenger.Messenger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Coordinates the sending of messages</p>
 <dl class="method">
 <dt id="crt_runner.messenger.Messenger.send_email">
-<tt class="descname">send_email</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#crt_runner.messenger.Messenger.send_email" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stub for sending email</p>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">This function should send an email to a particular address</p>
-</div>
+<tt class="descname">send_email</tt><big>(</big><em>from_name=None</em>, <em>from_email=None</em>, <em>to_name=None</em>, <em>to_email=None</em>, <em>subject=None</em>, <em>body=None</em><big>)</big><a class="headerlink" href="#crt_runner.messenger.Messenger.send_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends an email message</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>from_name</strong> (<em>str</em>) &#8211; Human name of the person the message appears to come from</li>
+<li><strong>from_email</strong> (<em>str</em>) &#8211; Email address of the person the message appears to come from</li>
+<li><strong>to_name</strong> (<em>str</em>) &#8211; Human name of the recipient</li>
+<li><strong>to_email</strong> (<em>str</em>) &#8211; Email of the recipient</li>
+<li><strong>subject</strong> (<em>str</em>) &#8211; Subject of the email</li>
+<li><strong>body</strong> (<em>str</em>) &#8211; Contents of the email</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>

@@ -19,6 +19,13 @@ The yaml file should include the following items:
 * collab_file_base_name
 * user_settings_base_name
 * warnings
+* box_access_token_file
+* box_refresh_token_file
+* box_client_id
+* box_client_secret
+* box_sync_modify_dates
+* root_box_folder_name
+* root_local_folder
 
 The fields expected in each institute section:
 ----------------------------------------------
@@ -57,6 +64,13 @@ Example YAML file
 	cm_file_base_name: '_CMs.xls'
 	collab_file_base_name: '_collabs.xls'
 	user_settings_base_name: '_user_settings.txt'
+	box_access_token_file: /path/to/box_access_token.txt
+	box_refresh_token_file: /path/to/box_refresh_token.txt
+	box_client_id: ae399afe
+	box_client_secret: eafegead
+	box_sync_modify_dates: /path/to/modify_dates.yaml
+	root_box_folder_name: collab_test
+	root_local_folder: /path/to/sync_folders
 	emails:
 		sample_email:
 			subject: 'email subject'

@@ -131,6 +131,14 @@
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="crt_runner.config.Config.institute_list">
+<tt class="descname">institute_list</tt><a class="headerlink" href="#crt_runner.config.Config.institute_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of institutes
+:return: List of institutes
+:rtype: list</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="crt_runner.config.Config.user_friendly_warning">
 <tt class="descname">user_friendly_warning</tt><big>(</big><em>warning</em><big>)</big><a class="headerlink" href="#crt_runner.config.Config.user_friendly_warning" title="Permalink to this definition">¶</a></dt>
@@ -163,6 +171,13 @@
 <li>collab_file_base_name</li>
 <li>user_settings_base_name</li>
 <li>warnings</li>
+<li>box_access_token_file</li>
+<li>box_refresh_token_file</li>
+<li>box_client_id</li>
+<li>box_client_secret</li>
+<li>box_sync_modify_dates</li>
+<li>root_box_folder_name</li>
+<li>root_local_folder</li>
 </ul>
 <div class="section" id="the-fields-expected-in-each-institute-section">
 <h3>The fields expected in each institute section:<a class="headerlink" href="#the-fields-expected-in-each-institute-section" title="Permalink to this headline">¶</a></h3>
@@ -200,6 +215,13 @@
 <span class="l-Scalar-Plain">cm_file_base_name</span><span class="p-Indicator">:</span> <span class="s">&#39;_CMs.xls&#39;</span>
 <span class="l-Scalar-Plain">collab_file_base_name</span><span class="p-Indicator">:</span> <span class="s">&#39;_collabs.xls&#39;</span>
 <span class="l-Scalar-Plain">user_settings_base_name</span><span class="p-Indicator">:</span> <span class="s">&#39;_user_settings.txt&#39;</span>
+<span class="l-Scalar-Plain">box_access_token_file</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/path/to/box_access_token.txt</span>
+<span class="l-Scalar-Plain">box_refresh_token_file</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/path/to/box_refresh_token.txt</span>
+<span class="l-Scalar-Plain">box_client_id</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ae399afe</span>
+<span class="l-Scalar-Plain">box_client_secret</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">eafegead</span>
+<span class="l-Scalar-Plain">box_sync_modify_dates</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/path/to/modify_dates.yaml</span>
+<span class="l-Scalar-Plain">root_box_folder_name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">collab_test</span>
+<span class="l-Scalar-Plain">root_local_folder</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/path/to/sync_folders</span>
 <span class="l-Scalar-Plain">emails</span><span class="p-Indicator">:</span>
         <span class="l-Scalar-Plain">sample_email</span><span class="p-Indicator">:</span>
                 <span class="l-Scalar-Plain">subject</span><span class="p-Indicator">:</span> <span class="s">&#39;email</span><span class="nv"> </span><span class="s">subject&#39;</span>
