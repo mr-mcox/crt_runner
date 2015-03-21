@@ -12,7 +12,7 @@ class Config(object):
         :type config_file: The path to a yaml file or a yaml stream
 
         """
-        self._config = yaml.load(config_file)
+        self._config = self._yaml_from_file(config_file)
 
         # Create properties for the keys in the top level of the dictionary,
         # excluding certain special properties
@@ -20,6 +20,12 @@ class Config(object):
         topline_properties = list(set(self._config.keys()) - special_props)
         for prop in topline_properties:
             self._add_topline_property(prop)
+
+    def _yaml_from_file(self,yaml_file):
+        stream = open(yaml_file, 'r') 
+        yaml_contents = yaml.load(stream)
+        stream.close()
+        return yaml_contents
 
     def _add_topline_property(self, name):
         # create local fget
@@ -85,3 +91,14 @@ class Config(object):
             [w['user_friendly_warning'] for w in self._config['warnings']]
         ))
         return warning_dict[warning]
+
+    @property
+    def institute_list(self):
+        """List of institutes
+        :return: List of institutes
+        :rtype: list
+        """
+
+        assert 'institutes' in self._config
+        return [inst for inst in self._config['institutes'].keys()]
+    
