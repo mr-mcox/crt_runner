@@ -5,7 +5,7 @@
    ✔  For folder, download files where modified_at is greater than local @done (15-03-19 12:29)
    ✔ For folder, upload files that don't exit yet @done (15-03-19 12:30)
    ✔ For folder, update files where local modified_at is greater than Box @done (15-03-19 12:30)
- ☐ Create production code for files
+ ✔ Create production code for files @done (15-03-21 09:57)
  ☐ Create test code for folders
  ☐ Create production code for folders
  ☐ Archive sanitized version of box_sync.py in case I need to use it later

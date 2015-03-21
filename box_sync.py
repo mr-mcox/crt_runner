@@ -69,17 +69,25 @@ class SyncedFile(object):
 
         # Set box and local modify dates if they exist
         if(parent_modify_dates is not None):
-            assert type(parent_modify_dates) is dict()
+            assert type(parent_modify_dates) is dict
             if name in parent_modify_dates:
                 file_modify_info = parent_modify_dates[name]
                 assert 'box_modify_date' in file_modify_info
                 assert 'local_modify_date' in file_modify_info
                 box_modify_date = file_modify_info['box_modify_date']
                 local_modify_date = file_modify_info['local_modify_date']
+        self.box_modify_date = box_modify_date
+        self.local_modify_date = local_modify_date
 
     @property
     def modify_dates(self):
-        return None
+        """Modify dates for this SyncedFile
+
+        :return: A dictionary with 'box_modify_date' and 'local_modify_date'
+        :rtype: dict
+        """
+        return {'box_modify_date': self.box_modify_date,
+                'local_modify_date': self.local_modify_date, }
 
     @property
     def box_file(self):
@@ -88,6 +96,8 @@ class SyncedFile(object):
             for item in self.box_parent_folder.get_items(limit=100):
                 if item.get()['name'] == self.name:
                     self._box_file = item
+                    self.box_modify_date = dateutil.parser.parse(
+                        item.get()['modified_at'])
                     break
         return self._box_file
 
@@ -95,6 +105,7 @@ class SyncedFile(object):
     def box_file(self, value):
         self._box_file = value
 
+    @property
     def _local_file_exists(self):
         return os.path.isfile(self.local_file_path)
 
@@ -102,12 +113,14 @@ class SyncedFile(object):
     def local_file_path(self):
         return os.path.join(self.local_parent_folder, self.name)
 
+    @property
     def _box_file_exists(self):
         if self.box_file is not None:
             return True
         else:
             return False
 
+    @property
     def _local_file_more_recent(self):
         if (self.box_modify_date is not None
                 and self.local_modify_date is not None):
@@ -115,6 +128,7 @@ class SyncedFile(object):
                 return True
         return False
 
+    @property
     def _box_file_more_recent(self):
         if (self.box_modify_date is not None
                 and self.local_modify_date is not None):
@@ -124,12 +138,23 @@ class SyncedFile(object):
 
     def _download_box_file_to_local(self):
         self.box_file.download_to(self.local_file_path)
+        self.local_modify_date = self.box_modify_date
 
     def _upload_local_file_to_box_folder(self):
         self.box_parent_folder.upload(self.local_file_path)
+        self.box_modify_date = self.local_modify_date
 
     def _replace_box_file_with_local(self):
         self.box_file.update_contents(self.local_file_path)
+        self.box_modify_date = self.local_modify_date
 
     def sync_files(self):
-        pass
+        if self._box_file_exists and not self._local_file_exists:
+            self._download_box_file_to_local()
+        if self._local_file_exists and not self._box_file_exists:
+            self._upload_local_file_to_box_folder()
+        if self._box_file_exists and self._local_file_exists:
+            if self._box_file_more_recent:
+                self._download_box_file_to_local()
+            if self._local_file_more_recent:
+                self._replace_box_file_with_local()
