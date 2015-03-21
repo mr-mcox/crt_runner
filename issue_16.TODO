@@ -8,4 +8,5 @@
  ✔ Create production code for files @done (15-03-21 09:57)
  ☐ Create test code for folders
  ☐ Create production code for folders
+ ☐ Test syncing
  ☐ Archive sanitized version of box_sync.py in case I need to use it later
