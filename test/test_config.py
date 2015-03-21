@@ -25,8 +25,9 @@ def test_lookup_folder_by_institute():
                    'institutes': {'Atlanta': {}}}
     with patch.object(Config, '_yaml_from_file', return_value=config_yaml):
         c = Config('config.yaml')
-        atlanta_path = os.path.join(config_yaml['root_local_folder'], 'Atlanta')
-    assert c.info_by_institute('Atlanta', 'path_to_folder')
+        atlanta_path = os.path.join(
+            config_yaml['root_local_folder'], 'Atlanta')
+    assert c.info_by_institute('Atlanta', 'path_to_folder') == atlanta_path
 
 
 def test_lookup_email_by_type():
