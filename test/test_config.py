@@ -1,5 +1,6 @@
 from unittest.mock import patch
 from ..config import Config
+import os.path
 
 
 def test_topline_settings():
@@ -17,6 +18,15 @@ def test_lookup_info_by_institute():
         c = Config('config.yaml')
         atlanta_ddm = config_yaml['institutes']['Atlanta']['ddm_name']
     assert c.info_by_institute('Atlanta', 'ddm_name') == atlanta_ddm
+
+
+def test_lookup_folder_by_institute():
+    config_yaml = {'root_local_folder': '/path/to/folder',
+                   'institutes': {'Atlanta': {}}}
+    with patch.object(Config, '_yaml_from_file', return_value=config_yaml):
+        c = Config('config.yaml')
+        atlanta_path = os.path.join(config_yaml['root_local_folder'], 'Atlanta')
+    assert c.info_by_institute('Atlanta', 'path_to_folder')
 
 
 def test_lookup_email_by_type():

@@ -1,4 +1,5 @@
 import yaml
+import os.path
 
 
 class Config(object):
@@ -21,8 +22,8 @@ class Config(object):
         for prop in topline_properties:
             self._add_topline_property(prop)
 
-    def _yaml_from_file(self,yaml_file):
-        stream = open(yaml_file, 'r') 
+    def _yaml_from_file(self, yaml_file):
+        stream = open(yaml_file, 'r')
         yaml_contents = yaml.load(stream)
         stream.close()
         return yaml_contents
@@ -47,8 +48,17 @@ class Config(object):
         """
         assert 'institutes' in self._config
         assert institute in self._config['institutes']
+
+        if field == 'path_to_folder':
+            return self.path_to_institute_folder(institute)
+
         assert field in self._config['institutes'][institute]
         return self._config['institutes'][institute][field]
+
+    def path_to_institute_folder(self, institute):
+        """Provide path to local institute folder"""
+        assert 'root_local_folder' in self._config
+        return os.path.join(self._config['root_local_folder'], institute)
 
     def email_text(self, email_type, field):
         """Provide text for a specific type of email
@@ -101,4 +111,3 @@ class Config(object):
 
         assert 'institutes' in self._config
         return [inst for inst in self._config['institutes'].keys()]
-    

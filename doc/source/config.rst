@@ -33,7 +33,6 @@ Each of these fields should be listed under the institute name:
 
 * ddm_name
 * ddm_email
-* path_to_folder
 * file_prefix
 
 The fields expected in each emails section:
