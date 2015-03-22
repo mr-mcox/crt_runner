@@ -65,7 +65,8 @@ def test_successful_run_results_sends_mesage(config):
     with patch.object(PerlCommand, 'run_crt'):
         with patch.object(Messenger, 'send_email') as send_email_mock:
             with patch.object(CRTLog, 'successfully_completed', return_value=True):
-                pc.run_crt_with_notifications(log_file=log_file)
+                with patch.object(CRTLog, 'send_warnings_message'):
+                    pc.run_crt_with_notifications(log_file=log_file)
 
     send_email_mock.assert_any_call(from_email=config.from_email,
                                     from_name=config.email_from_name,
@@ -85,7 +86,8 @@ def test_send_message_when_run_starts(config):
     with patch.object(PerlCommand, 'run_crt'):
         with patch.object(Messenger, 'send_email') as send_email_mock:
             with patch.object(CRTLog, 'successfully_completed', return_value=True):
-                pc.run_crt_with_notifications(log_file=log_file)
+                with patch.object(CRTLog, 'send_warnings_message'):
+                    pc.run_crt_with_notifications(log_file=log_file)
     send_email_mock.assert_any_call(from_email=config.from_email,
                                     from_name=config.email_from_name,
                                     to_name=config.info_by_institute(

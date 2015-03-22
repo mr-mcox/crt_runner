@@ -59,6 +59,7 @@ class PerlCommand(object):
         collab_file=collab_file,user_settings_file=user_settings_file,
         output_directory=output_directory,log_file=log_file)
         log = CRTLog(log_file,institute=institute)
+        log.send_warnings_message()
         if log.successfully_completed:
             m.send_email(from_email=config.from_email,
                      from_name=config.email_from_name,

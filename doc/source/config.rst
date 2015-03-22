@@ -18,6 +18,7 @@ The yaml file should include the following items:
 * cm_file_base_name
 * collab_file_base_name
 * user_settings_base_name
+* crt_log_base_name
 * warnings
 * box_access_token_file
 * box_refresh_token_file

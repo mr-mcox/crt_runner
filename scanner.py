@@ -38,8 +38,31 @@ class Scanner(object):
 
         :param str institute: Institute to scan folder for
         """
-        if self._most_recent_modify_timestamp_of_inputs(institute) > self.config.institute_last_run(institute):
-            self.perl_command.run_crt()
+        config = self.config
+        
+        initial_run = (self._most_recent_modify_timestamp_of_inputs(institute) is None
+                                   and self.has_all_required_files(institute))
+        should_run_crt = False
+        if initial_run:
+            should_run_crt = True
+        else:
+            inputs_recently_updated = (self._most_recent_modify_timestamp_of_inputs(institute)
+                                   > self.config.institute_last_run(institute))
+            if inputs_recently_updated:
+                should_run_crt = True
+
+        if should_run_crt:
+            self.perl_command.run_crt_with_notifications(institute=institute,
+                                                         path_to_crt=config.path_to_perl_script,
+                                                         cms_file=self.path_for_file(
+                                                             institute, 'cm'),
+                                                         collab_file=self.path_for_file(
+                                                             institute, 'collab'),
+                                                         user_settings_file=self.path_for_file(
+                                                             institute, 'user_settings'),
+                                                         output_directory=config.info_by_institute(
+                                                             institute, 'path_to_folder'),
+                                                         log_file=self.path_for_file(institute, 'log'))
 
     def path_for_file(self, institute=None, file=None):
         """Create path for given file type and institute
@@ -54,6 +77,7 @@ class Scanner(object):
             'collab': config.collab_file_base_name,
             'cm': config.cm_file_base_name,
             'user_settings': config.user_settings_base_name,
+            'log': config.crt_log_base_name,
         }
         path = "".join([
             config.info_by_institute(institute, 'path_to_folder'),

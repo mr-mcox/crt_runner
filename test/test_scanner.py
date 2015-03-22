@@ -8,9 +8,10 @@ from unittest.mock import patch, MagicMock
 import re
 import pytest
 
-def test_path_for_required_file():
+@pytest.fixture
+def config():
 
-    def return_institute_field(institute, value):
+    def return_institute_field(institute,value):
         if value == 'path_to_folder':
             return '/path/to/folder/'
         if value == 'file_prefix':
@@ -21,8 +22,15 @@ def test_path_for_required_file():
         config.cm_file_base_name = '_CMs.xls'
         config.collab_file_base_name = '_collabs.xls'
         config.user_settings_base_name = '_user_settings.txt'
+        config.path_to_perl_script = '/path/to/crt.pl'
+        config.crt_log_base_name = 'log_file'
         config.info_by_institute = MagicMock(
             side_effect=return_institute_field)
+    return config
+
+def test_path_for_required_file(config):
+    config = config
+    
 
     expected_collab_path = "".join([
         config.info_by_institute('ATL', 'path_to_folder'),
@@ -151,23 +159,34 @@ def test_scan_does_not_occur_if_is_running_true():
         s.sync_and_scan_institute_folders()
     assert folder_scan_mock.called is False
 
-def test_call_runner_if_input_files_more_recent_than_last_run():
+def test_call_runner_if_input_files_more_recent_than_last_run(config):
+    config = config
     #Setup where files are more recent than last run
-    with patch.object(PerlCommand, 'run_crt') as run_crt_mock, patch.object(Scanner,
+    with patch.object(PerlCommand, 'run_crt_with_notifications') as run_crt_mock, patch.object(Scanner,
         '_most_recent_modify_timestamp_of_inputs',return_value=100), patch.object(Config,
         'institute_last_run',return_value=90), patch.object(Config, '_yaml_from_file', 
         return_value=dict()):
-        config = Config('file.yaml')
+        config.institute_last_run = MagicMock(return_value=90)
         s = Scanner(config=config)
         s.scan_folder('some_folder')
     assert run_crt_mock.called
 
     #Setup where files are mot more recent than last run
-    with patch.object(PerlCommand, 'run_crt') as run_crt_mock, patch.object(Scanner,
+    with patch.object(PerlCommand, 'run_crt_with_notifications') as run_crt_mock, patch.object(Scanner,
         '_most_recent_modify_timestamp_of_inputs',return_value=100), patch.object(Config,
         'institute_last_run',return_value=110), patch.object(Config, '_yaml_from_file', 
         return_value=dict()):
-        config = Config('file.yaml')
-        s = Scanner(config=config)
-        s.scan_folder('some_folder')
+        # config = Config('file.yaml')
+        config.institute_last_run = MagicMock(return_value=110)
+        scan = Scanner(config=config)
+        scan.scan_folder('some_folder')
     assert run_crt_mock.called is False
+
+def test_call_runner_if_conditions_right_for_first_run(config):
+    with patch.object(PerlCommand, 'run_crt_with_notifications') as run_crt_mock:
+            config.institute_last_run = MagicMock(return_value=None)
+            scan = Scanner(config=config)
+            scan.has_all_required_files = MagicMock(return_value=True)
+            scan._most_recent_modify_timestamp_of_inputs = MagicMock(return_value=None)
+            scan.scan_folder('some_folder')
+    assert run_crt_mock.called

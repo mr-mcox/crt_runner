@@ -16,6 +16,8 @@ class CRTLog(object):
         :param log_file_handle: File hindle for the log
         :type log_file_handle: file_like
         """
+        if type(log_file_handle) is str:
+            log_file_handle = open(log_file_handle)
         self.log_contents = log_file_handle.read()
         self.config = config
         self.institute = institute
