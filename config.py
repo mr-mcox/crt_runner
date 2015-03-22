@@ -63,6 +63,9 @@ class Config(object):
         if field == 'path_to_folder':
             return self.path_to_institute_folder(institute)
 
+        if field == 'last_run':
+            return self.institute_last_run(institute)
+
         assert field in self._config['institutes'][institute]
         return self._config['institutes'][institute][field]
 
@@ -70,6 +73,16 @@ class Config(object):
         """Provide path to local institute folder"""
         assert 'root_local_folder' in self._config
         return os.path.join(self._config['root_local_folder'], institute)
+
+    def institute_last_run(self, institute):
+        """Provide timestamp for when the CRT.pl was last run"""
+        if 'last_run' in self._config['institutes'][institute]:
+            return self._config['institutes'][institute]['last_run']
+        else:
+            return None
+
+    def set_last_run(self, institute, value):
+        self._config['institutes'][institute]['last_run'] = value
 
     def email_text(self, email_type, field):
         """Provide text for a specific type of email

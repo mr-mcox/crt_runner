@@ -79,3 +79,16 @@ def test_setting_config_value_triggers_dump():
         config = Config('config.yaml')
         config.new_property = 'new_value'
     assert mock_dump.called
+
+def test_last_run_for_institute_returns_none_if_non_existant():
+    config_yaml = {'institutes': {'Atlanta': {}}}
+    with patch.object(Config, '_yaml_from_file', return_value=config_yaml):
+        c = Config('config.yaml')
+    assert c.info_by_institute('Atlanta', 'last_run') is None
+
+def test_set_last_run_for_institute():
+    config_yaml = {'institutes': {'Atlanta': {}}}
+    with patch.object(Config, '_yaml_from_file', return_value=config_yaml):
+        c = Config('config.yaml')
+        c.set_last_run('Atlanta',1234)
+    assert c.info_by_institute('Atlanta', 'last_run') == 1234

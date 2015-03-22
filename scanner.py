@@ -10,11 +10,7 @@ class Scanner(object):
     """Scan folders to determine whether CRT should be run"""
 
     def __init__(self, config=None):
-        """
 
-        .. todo:: Canary file should be replaced with more sophisticated run condtions
-        """
-        self.canary_file = 'placement_reccomendations_and_cm_level_scoring.xls'
         self.perl_command = PerlCommand()
         self.config = config
         self.files_to_check = ['cm', 'collab', 'user_settings']
@@ -27,23 +23,22 @@ class Scanner(object):
         config = self.config
         if not config.is_running:
             config.is_running = True
-            #Sync folders
+            # Sync folders
             box_sync = BoxSync(config)
             box_sync.sync_institute_folders()
 
-            #Scan folders
+            # Scan folders
             for institute in config.institute_list:
-                self.scan_folder(config.info_by_institute(institute,'path_to_folder'))
+                self.scan_folder(
+                    config.info_by_institute(institute, 'path_to_folder'))
             config.is_running = False
 
-    def scan_folder(self, folder):
-        """Run CRT command if canary file missing from identified folder
+    def scan_folder(self, institute):
+        """Run CRT command if inputs are more recent than time of last run
 
-        :param folder: Path to the folder to scan for the canary file
-        :type folder: str
+        :param str institute: Institute to scan folder for
         """
-        canary_file = self.canary_file
-        if not os.path.isfile(os.path.join(folder, canary_file)):
+        if self._most_recent_modify_timestamp_of_inputs(institute) > self.config.institute_last_run(institute):
             self.perl_command.run_crt()
 
     def path_for_file(self, institute=None, file=None):
@@ -65,6 +60,18 @@ class Scanner(object):
             config.info_by_institute(institute, 'file_prefix'),
             base_name_map[file]])
         return path
+
+    def _most_recent_modify_timestamp_of_inputs(self, institute):
+        assert self.has_all_required_files(institute)
+
+        files_to_check = ['collab', 'cm', 'user_settings']
+        most_recent_timestamp = 0
+
+        for file_type in files_to_check:
+            ts = os.path.getmtime(self.path_for_file(institute, file_type))
+            if ts > most_recent_timestamp:
+                most_recent_timestamp = ts
+        return most_recent_timestamp
 
     def send_message_for_missing_files(self, institute=None):
         """Send message for each missing file

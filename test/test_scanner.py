@@ -8,17 +8,6 @@ from unittest.mock import patch, MagicMock
 import re
 import pytest
 
-
-def test_call_runner_if_output_file_missing():
-    canary_file = 'placement_reccomendations_and_cm_level_scoring.xls'
-    with patch('os.path.isfile', return_value=False) as isfile_mock:
-        with patch.object(PerlCommand, 'run_crt') as run_crt_mock:
-            s = Scanner()
-            s.scan_folder('some_folder')
-    isfile_mock.assert_called_with(os.path.join('some_folder', canary_file))
-    run_crt_mock.assert_called_with()
-
-
 def test_path_for_required_file():
 
     def return_institute_field(institute, value):
@@ -161,3 +150,24 @@ def test_scan_does_not_occur_if_is_running_true():
         s = Scanner(config=config)
         s.sync_and_scan_institute_folders()
     assert folder_scan_mock.called is False
+
+def test_call_runner_if_input_files_more_recent_than_last_run():
+    #Setup where files are more recent than last run
+    with patch.object(PerlCommand, 'run_crt') as run_crt_mock, patch.object(Scanner,
+        '_most_recent_modify_timestamp_of_inputs',return_value=100), patch.object(Config,
+        'institute_last_run',return_value=90), patch.object(Config, '_yaml_from_file', 
+        return_value=dict()):
+        config = Config('file.yaml')
+        s = Scanner(config=config)
+        s.scan_folder('some_folder')
+    assert run_crt_mock.called
+
+    #Setup where files are mot more recent than last run
+    with patch.object(PerlCommand, 'run_crt') as run_crt_mock, patch.object(Scanner,
+        '_most_recent_modify_timestamp_of_inputs',return_value=100), patch.object(Config,
+        'institute_last_run',return_value=110), patch.object(Config, '_yaml_from_file', 
+        return_value=dict()):
+        config = Config('file.yaml')
+        s = Scanner(config=config)
+        s.scan_folder('some_folder')
+    assert run_crt_mock.called is False

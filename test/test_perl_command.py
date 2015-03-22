@@ -2,6 +2,7 @@ from unittest.mock import patch, MagicMock
 from ..perl_execution import PerlCommand
 from ..messenger import Messenger
 from ..crt_log import CRTLog
+from ..config import Config
 import tempfile
 import pytest
 
@@ -38,31 +39,33 @@ def config():
 
 def test_run_command_with_parameters():
     pc = PerlCommand()
-    pc.cms_file = 'some_cms_file.xls'
-    pc.collab_file = 'some_collab_file.xls'
-    pc.user_settings_file = 'some_user_settings_file.txt'
-    pc.output_directory = 'some_output_directory'
-    pc.path_to_crt = 'path_to_crt'
-    pc.log_file = 'dummy_log_file'
+    cms_file = 'some_cms_file.xls'
+    collab_file = 'some_collab_file.xls'
+    user_settings_file = 'some_user_settings_file.txt'
+    output_directory = 'some_output_directory'
+    path_to_crt = 'path_to_crt'
+    log_file = 'dummy_log_file'
 
     with patch('subprocess.call') as subprocess_mock:
-        pc.run_crt()
+        pc.run_crt(path_to_crt=path_to_crt,cms_file=cms_file,
+        collab_file=collab_file,user_settings_file=user_settings_file,
+        output_directory=output_directory,log_file=log_file)
     expected_arguments = ['perl',
-                          'path_to_crt',
-                          'some_cms_file.xls',
-                          'some_collab_file.xls',
-                          'some_user_settings_file.txt',
-                          'some_output_directory']
-    subprocess_mock.assert_called_with(expected_arguments, stdout=pc.log_file)
+                          path_to_crt,
+                          cms_file,
+                          collab_file,
+                          user_settings_file,
+                          output_directory]
+    subprocess_mock.assert_called_with(expected_arguments, stdout=log_file)
 
 
 def test_successful_run_results_sends_mesage(config):
     pc = PerlCommand(config)
-    pc.log_file = tempfile.TemporaryFile()
+    log_file = tempfile.TemporaryFile()
     with patch.object(PerlCommand, 'run_crt'):
         with patch.object(Messenger, 'send_email') as send_email_mock:
             with patch.object(CRTLog, 'successfully_completed', return_value=True):
-                pc.run_crt_with_notifications()
+                pc.run_crt_with_notifications(log_file=log_file)
 
     send_email_mock.assert_any_call(from_email=config.from_email,
                                     from_name=config.email_from_name,
@@ -78,11 +81,11 @@ def test_successful_run_results_sends_mesage(config):
 
 def test_send_message_when_run_starts(config):
     pc = PerlCommand(config)
-    pc.log_file = tempfile.TemporaryFile()
+    log_file = tempfile.TemporaryFile()
     with patch.object(PerlCommand, 'run_crt'):
         with patch.object(Messenger, 'send_email') as send_email_mock:
             with patch.object(CRTLog, 'successfully_completed', return_value=True):
-                pc.run_crt_with_notifications()
+                pc.run_crt_with_notifications(log_file=log_file)
     send_email_mock.assert_any_call(from_email=config.from_email,
                                     from_name=config.email_from_name,
                                     to_name=config.info_by_institute(
@@ -93,3 +96,13 @@ def test_send_message_when_run_starts(config):
                                         'crt_success', 'subject'),
                                     body=config.email_text(
                                         'crt_success', 'body'))
+
+def test_run_crt_updates_institute_run_time():
+    config_input = dict()
+    with patch.object(Config, '_yaml_from_file', 
+        return_value=config_input), patch('subprocess.call'),patch.object(Config,
+        'set_last_run') as last_run_mock:
+        config = Config('file.yaml')
+        pc = PerlCommand(config=config)
+        pc.run_crt(institute='Atlanta')
+        assert last_run_mock.called
