@@ -13,6 +13,7 @@ class Config(object):
         :type config_file: The path to a yaml file or a yaml stream
 
         """
+        self.config_file = config_file
         self._config = self._yaml_from_file(config_file)
 
         # Create properties for the keys in the top level of the dictionary,
@@ -31,12 +32,22 @@ class Config(object):
     def _add_topline_property(self, name):
         # create local fget
         fget = lambda self: self._get_property(name)
+        fset = lambda self, value: self._set_property(name, value)
 
         # add property to self
-        setattr(self.__class__, name, property(fget))
+        setattr(self.__class__, name, property(fget, fset))
 
     def _get_property(self, name):
         return self._config[name]
+
+    def _set_property(self, name, value):
+        self._config[name] = value
+        self._dump_config_to_yaml()
+
+    def _dump_config_to_yaml(self):
+        yaml_file = open(self.config_file, 'w')
+        yaml.dump(self._config, yaml_file)
+        yaml_file.close()
 
     def info_by_institute(self, institute, field):
         """Provide requested information about the institute

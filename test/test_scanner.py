@@ -2,6 +2,8 @@ import os.path
 from ..scanner import Scanner
 from ..perl_execution import PerlCommand
 from ..messenger import Messenger
+from ..config import Config
+from ..box_sync import BoxSync
 from unittest.mock import patch, MagicMock
 import re
 import pytest
@@ -50,7 +52,8 @@ def test_path_for_required_file():
         institute='Atlanta', file='collab') == expected_collab_path
     assert s.path_for_file(institute='Atlanta', file='cm') == expected_cm_path
     assert s.path_for_file(
-        institute='Atlanta', file='user_settings') == expected_user_settings_path
+        institute='Atlanta', 
+        file='user_settings') == expected_user_settings_path
 
 
 @pytest.fixture
@@ -132,3 +135,29 @@ def test_has_all_required_files(missing_cm_file_setup):
     with patch.object(Scanner, 'path_for_file', side_effect=return_file_path):
         s = Scanner()
         assert s.has_all_required_files(institute='ATL') == False
+
+def test_scanning_folders_sets_is_running():
+    config_input = {'is_running': False, 'institutes': {
+        'Atlanta': {}}, 'root_local_folder': '/path'}
+    with patch.object(Config, '_yaml_from_file', 
+        return_value=config_input), patch.object(Config, 
+        '_set_property') as set_prop_mock, patch.object(Scanner, 
+        'scan_folder'), patch.object(BoxSync, 
+        'authenticate_client'), patch.object(BoxSync, 'sync_institute_folders'):
+        config = Config('file.yaml')
+        s = Scanner(config=config)
+        s.sync_and_scan_institute_folders()
+    set_prop_mock.assert_any_call('is_running', True)
+    assert config.is_running is False
+
+def test_scan_does_not_occur_if_is_running_true():
+    config_input = {'is_running': True, 'institutes': {
+        'Atlanta': {}}, 'root_local_folder': '/path'}
+    with patch.object(Config, '_yaml_from_file', 
+        return_value=config_input), patch.object(Config, 
+        '_set_property') as set_prop_mock, patch.object(Scanner, 
+        'scan_folder') as folder_scan_mock:
+        config = Config('file.yaml')
+        s = Scanner(config=config)
+        s.sync_and_scan_institute_folders()
+    assert folder_scan_mock.called is False

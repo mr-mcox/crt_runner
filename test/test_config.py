@@ -71,3 +71,11 @@ def test_institute_list():
         c = Config('config.yaml')
         assert c.institute_list == [
             inst for inst in config_yaml['institutes'].keys()]
+
+
+def test_setting_config_value_triggers_dump():
+    config_yaml = {'new_property': 'old_value'}
+    with patch.object(Config, '_dump_config_to_yaml') as mock_dump, patch.object(Config, '_yaml_from_file', return_value=config_yaml):
+        config = Config('config.yaml')
+        config.new_property = 'new_value'
+    assert mock_dump.called

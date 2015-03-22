@@ -2,6 +2,7 @@ from .perl_execution import PerlCommand
 import os.path
 import re
 from .messenger import Messenger
+from .box_sync import BoxSync
 
 
 class Scanner(object):
@@ -17,6 +18,23 @@ class Scanner(object):
         self.perl_command = PerlCommand()
         self.config = config
         self.files_to_check = ['cm', 'collab', 'user_settings']
+
+    def sync_and_scan_institute_folders(self):
+        """Scan all institute folders
+
+        .. note:: Scan does not start if config file indicates that it is currently running
+        """
+        config = self.config
+        if not config.is_running:
+            config.is_running = True
+            #Sync folders
+            box_sync = BoxSync(config)
+            box_sync.sync_institute_folders()
+
+            #Scan folders
+            for institute in config.institute_list:
+                self.scan_folder(config.info_by_institute(institute,'path_to_folder'))
+            config.is_running = False
 
     def scan_folder(self, folder):
         """Run CRT command if canary file missing from identified folder
