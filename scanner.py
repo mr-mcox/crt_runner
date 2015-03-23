@@ -3,8 +3,6 @@ import os.path
 import re
 from .messenger import Messenger
 from .box_sync import BoxSync
-import pdb
-
 
 class Scanner(object):
 
