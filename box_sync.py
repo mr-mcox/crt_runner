@@ -287,6 +287,8 @@ class SyncedFile(object):
         self.box_file.download_to(file_to_write)
         file_to_write.close()
         self.local_modify_date = self.box_modify_date
+        os.utime(
+            self.local_file_path, (self.box_modify_date, self.box_modify_date))
 
     def _upload_local_file_to_box_folder(self):
         self.box_parent_folder.upload(self.local_file_path)
