@@ -10,7 +10,7 @@ class CRTLog(object):
 
     """Identify components of CRT run based on log results"""
 
-    def __init__(self, log_file_handle, institute='Atlanta', config=None):
+    def __init__(self, log_file_handle, institute=None, config=None):
         """
 
         :param log_file_handle: File hindle for the log
@@ -40,7 +40,7 @@ class CRTLog(object):
         """
         warning_list = self.warnings_in_log()
         if len(warning_list) > 0:
-            m = Messenger(self.config)
+            m = Messenger(config=self.config)
             config = self.config
             joined_warnings = "\n".join(warning_list)
             full_body = re.sub('WARNINGS_LIST', joined_warnings,

@@ -22,7 +22,7 @@ class PerlCommand(object):
     def run_crt(self, institute=None,
         path_to_crt=None,cms_file=None,
         collab_file=None,user_settings_file=None,
-        output_directory=None,log_file=None):
+        output_directory=None,log_file=None, log_file_handle=None):
         """
         Run the CRT command
 
@@ -30,12 +30,14 @@ class PerlCommand(object):
         """
         if self.config is not None:
             self.config.set_last_run(institute,datetime.now().timestamp())
+        if log_file_handle is None:
+            log_file_handle = open(log_file,'w')
         subprocess.call(['perl',
                          path_to_crt,
                          cms_file,
                          collab_file,
                          user_settings_file,
-                         output_directory], stdout=log_file)
+                         output_directory], stdout=log_file_handle)
 
     def run_crt_with_notifications(self,institute=None,
         path_to_crt=None,cms_file=None,
@@ -45,20 +47,20 @@ class PerlCommand(object):
         Run the CRT and notify send messages upon completion
         """
         config = self.config
-        m = Messenger(config)
+        m = Messenger(config=config)
         m.send_email(from_email=config.from_email,
                      from_name=config.email_from_name,
                      to_name=config.info_by_institute(
-                         'Atlanta', 'ddm_name'),
+                         institute, 'ddm_name'),
                      to_email=config.info_by_institute(
-                         'Atlanta', 'ddm_email'),
+                         institute, 'ddm_email'),
                      subject=config.email_text('crt_started', 'subject'),
                      body=config.email_text('crt_started', 'body'))
         self.run_crt(institute=institute,
         path_to_crt=path_to_crt,cms_file=cms_file,
         collab_file=collab_file,user_settings_file=user_settings_file,
         output_directory=output_directory,log_file=log_file)
-        log = CRTLog(log_file,institute=institute)
+        log = CRTLog(log_file,institute=institute,config=config)
         log.send_warnings_message()
         if log.successfully_completed:
             m.send_email(from_email=config.from_email,

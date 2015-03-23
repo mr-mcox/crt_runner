@@ -60,7 +60,7 @@ Example YAML file
 	path_to_perl_script: '/path/to/script'
 	mandrill_api_key: 'API SECRET'
 	from_email: 'national@tfa.org'
-	from_name: 'National Overloard'
+	email_from_name: 'National Overloard'
 	cm_file_base_name: '_CMs.xls'
 	collab_file_base_name: '_collabs.xls'
 	user_settings_base_name: '_user_settings.txt'

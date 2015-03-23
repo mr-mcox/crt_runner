@@ -46,7 +46,7 @@ class Config(object):
 
     def _dump_config_to_yaml(self):
         yaml_file = open(self.config_file, 'w')
-        yaml.dump(self._config, yaml_file)
+        yaml.dump(self._config, yaml_file, default_flow_style=False)
         yaml_file.close()
 
     def info_by_institute(self, institute, field):

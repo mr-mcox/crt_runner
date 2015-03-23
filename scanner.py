@@ -3,6 +3,7 @@ import os.path
 import re
 from .messenger import Messenger
 from .box_sync import BoxSync
+import pdb
 
 
 class Scanner(object):
@@ -11,7 +12,7 @@ class Scanner(object):
 
     def __init__(self, config=None):
 
-        self.perl_command = PerlCommand()
+        self.perl_command = PerlCommand(config=config)
         self.config = config
         self.files_to_check = ['cm', 'collab', 'user_settings']
 
@@ -29,8 +30,10 @@ class Scanner(object):
 
             # Scan folders
             for institute in config.institute_list:
-                self.scan_folder(
-                    config.info_by_institute(institute, 'path_to_folder'))
+                self.scan_folder(institute)
+                #Sync after each institute CRT run
+                box_sync.sync_institute_folders()
+
             config.is_running = False
 
     def scan_folder(self, institute):
@@ -40,12 +43,12 @@ class Scanner(object):
         """
         config = self.config
         
-        initial_run = (self._most_recent_modify_timestamp_of_inputs(institute) is None
+        initial_run = (config.institute_last_run(institute) is None
                                    and self.has_all_required_files(institute))
         should_run_crt = False
         if initial_run:
             should_run_crt = True
-        else:
+        elif self.has_all_required_files(institute):
             inputs_recently_updated = (self._most_recent_modify_timestamp_of_inputs(institute)
                                    > self.config.institute_last_run(institute))
             if inputs_recently_updated:
@@ -79,10 +82,10 @@ class Scanner(object):
             'user_settings': config.user_settings_base_name,
             'log': config.crt_log_base_name,
         }
-        path = "".join([
-            config.info_by_institute(institute, 'path_to_folder'),
+        path = os.path.join(config.info_by_institute(institute, 'path_to_folder'),
+            "".join([
             config.info_by_institute(institute, 'file_prefix'),
-            base_name_map[file]])
+            base_name_map[file]]))
         return path
 
     def _most_recent_modify_timestamp_of_inputs(self, institute):

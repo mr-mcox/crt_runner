@@ -167,8 +167,9 @@ def test_call_runner_if_input_files_more_recent_than_last_run(config):
         'institute_last_run',return_value=90), patch.object(Config, '_yaml_from_file', 
         return_value=dict()):
         config.institute_last_run = MagicMock(return_value=90)
-        s = Scanner(config=config)
-        s.scan_folder('some_folder')
+        scan = Scanner(config=config)
+        scan.has_all_required_files = MagicMock(return_value=True)
+        scan.scan_folder('some_folder')
     assert run_crt_mock.called
 
     #Setup where files are mot more recent than last run
@@ -179,6 +180,7 @@ def test_call_runner_if_input_files_more_recent_than_last_run(config):
         # config = Config('file.yaml')
         config.institute_last_run = MagicMock(return_value=110)
         scan = Scanner(config=config)
+
         scan.scan_folder('some_folder')
     assert run_crt_mock.called is False
 
@@ -187,6 +189,5 @@ def test_call_runner_if_conditions_right_for_first_run(config):
             config.institute_last_run = MagicMock(return_value=None)
             scan = Scanner(config=config)
             scan.has_all_required_files = MagicMock(return_value=True)
-            scan._most_recent_modify_timestamp_of_inputs = MagicMock(return_value=None)
             scan.scan_folder('some_folder')
     assert run_crt_mock.called

@@ -44,19 +44,19 @@ def test_run_command_with_parameters():
     user_settings_file = 'some_user_settings_file.txt'
     output_directory = 'some_output_directory'
     path_to_crt = 'path_to_crt'
-    log_file = 'dummy_log_file'
+    log_file_handle = 'dummy_log_file'
 
     with patch('subprocess.call') as subprocess_mock:
         pc.run_crt(path_to_crt=path_to_crt,cms_file=cms_file,
         collab_file=collab_file,user_settings_file=user_settings_file,
-        output_directory=output_directory,log_file=log_file)
+        output_directory=output_directory,log_file_handle=log_file_handle)
     expected_arguments = ['perl',
                           path_to_crt,
                           cms_file,
                           collab_file,
                           user_settings_file,
                           output_directory]
-    subprocess_mock.assert_called_with(expected_arguments, stdout=log_file)
+    subprocess_mock.assert_called_with(expected_arguments, stdout=log_file_handle)
 
 
 def test_successful_run_results_sends_mesage(config):
@@ -106,5 +106,5 @@ def test_run_crt_updates_institute_run_time():
         'set_last_run') as last_run_mock:
         config = Config('file.yaml')
         pc = PerlCommand(config=config)
-        pc.run_crt(institute='Atlanta')
+        pc.run_crt(institute='Atlanta',log_file_handle='dummy_file')
         assert last_run_mock.called
