@@ -59,15 +59,6 @@
 <em class="property">class </em><tt class="descclassname">crt_runner.scanner.</tt><tt class="descname">Scanner</tt><big>(</big><em>config=None</em><big>)</big><a class="headerlink" href="#crt_runner.scanner.Scanner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scan folders to determine whether CRT should be run</p>
 <dl class="method">
-<dt id="crt_runner.scanner.Scanner.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>config=None</em><big>)</big><a class="headerlink" href="#crt_runner.scanner.Scanner.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Canary file should be replaced with more sophisticated run condtions</p>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="crt_runner.scanner.Scanner.has_all_required_files">
 <tt class="descname">has_all_required_files</tt><big>(</big><em>institute=None</em><big>)</big><a class="headerlink" href="#crt_runner.scanner.Scanner.has_all_required_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indicate wheter all required files are present</p>
@@ -106,13 +97,13 @@
 
 <dl class="method">
 <dt id="crt_runner.scanner.Scanner.scan_folder">
-<tt class="descname">scan_folder</tt><big>(</big><em>folder</em><big>)</big><a class="headerlink" href="#crt_runner.scanner.Scanner.scan_folder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run CRT command if canary file missing from identified folder</p>
+<tt class="descname">scan_folder</tt><big>(</big><em>institute</em><big>)</big><a class="headerlink" href="#crt_runner.scanner.Scanner.scan_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run CRT command if inputs are more recent than time of last run</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>folder</strong> (<em>str</em>) &#8211; Path to the folder to scan for the canary file</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>institute</strong> (<em>str</em>) &#8211; Institute to scan folder for</td>
 </tr>
 </tbody>
 </table>
@@ -130,6 +121,16 @@
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="crt_runner.scanner.Scanner.sync_and_scan_institute_folders">
+<tt class="descname">sync_and_scan_institute_folders</tt><big>(</big><big>)</big><a class="headerlink" href="#crt_runner.scanner.Scanner.sync_and_scan_institute_folders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scan all institute folders</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Scan does not start if config file indicates that it is currently running</p>
+</div>
 </dd></dl>
 
 </dd></dl>
