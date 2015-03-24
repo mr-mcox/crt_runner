@@ -32,7 +32,7 @@ class Scanner(object):
             for institute in config.institute_list:
                 self.scan_folder(institute)
                 # Sync after each institute CRT run
-                box_sync.sync_institute_folders()
+                box_sync.sync_institute_folders(institute)
 
             config.is_running = False
 

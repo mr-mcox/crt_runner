@@ -89,18 +89,31 @@ class BoxSync(object):
     def institute_folders(self):
         if not hasattr(self, '_institute_folders'):
             institute_folders = list()
+            self._institute_folder_by_name = dict()
             for institute in self.config.institute_list:
                 sf = SyncedFolder(name=institute,
                                   box_parent_folder=self.root_box_folder,
                                   local_parent_folder=self.config.root_local_folder,
                                   parent_modify_dates=self.modify_dates)
                 institute_folders.append(sf)
+                self._institute_folder_by_name[institute] = sf
             self._institute_folders = institute_folders
         return self._institute_folders
 
-    def sync_institute_folders(self):
-        for inst_folder in self.institute_folders:
-            inst_folder.sync_folder()
+    def institute_folder_by_name(self, institute):
+        assert institute in self._institute_folder_by_name[institute]
+        return self._institute_folder_by_name[institute]
+
+    def sync_institute_folders(self,institute=None):
+        """Sync folder or folders
+
+        :param str institute: (Optional) Institute name
+        """
+        if institute is None:
+            for inst_folder in self.institute_folders:
+                inst_folder.sync_folder()
+        else:
+            self.institute_folder_by_name(institute).sync_folder()
         self.refresh_modify_dates()
 
         # Save sync records
