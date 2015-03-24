@@ -56,7 +56,8 @@ def test_run_command_with_parameters():
                           collab_file,
                           user_settings_file,
                           output_directory]
-    subprocess_mock.assert_called_with(expected_arguments, stdout=log_file_handle)
+    subprocess_mock.assert_called_with(expected_arguments, 
+        stdout=log_file_handle, stderr=log_file_handle)
 
 
 def test_successful_run_results_sends_mesage(config):

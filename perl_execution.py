@@ -37,7 +37,9 @@ class PerlCommand(object):
                          cms_file,
                          collab_file,
                          user_settings_file,
-                         output_directory], stdout=log_file_handle)
+                         output_directory], 
+                         stdout=log_file_handle,
+                         stderr=log_file_handle)
 
     def run_crt_with_notifications(self,institute=None,
         path_to_crt=None,cms_file=None,
