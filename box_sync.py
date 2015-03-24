@@ -220,7 +220,7 @@ class SyncedFile(object):
                 assert 'local_modify_date' in file_modify_info
                 box_modify_date = file_modify_info['box_modify_date']
                 local_modify_date = file_modify_info['local_modify_date']
-        self.box_modify_date = box_modify_date
+        self.stored_box_modify_date = box_modify_date
         self.local_modify_date = local_modify_date
 
     @property
@@ -234,14 +234,20 @@ class SyncedFile(object):
                 'local_modify_date': self.local_modify_date, }
 
     @property
+    def box_modify_date(self):
+        if self.box_file is None:
+            return None
+        else:
+            return dateutil.parser.parse(
+                            self.box_file.get()['modified_at']).timestamp()
+
+    @property
     def box_file(self):
         if not hasattr(self, '_box_file'):
             self._box_file = None
             for item in self.box_parent_folder.get_items(limit=100):
                 if item.get()['name'] == self.name:
                     self._box_file = item
-                    self.box_modify_date = dateutil.parser.parse(
-                        item.get()['modified_at']).timestamp()
                     break
         return self._box_file
 
@@ -287,25 +293,28 @@ class SyncedFile(object):
                 return True
         return False
 
+    def _syncronize_box_local_modify_times(self):
+        self.local_modify_date = self.box_modify_date
+        os.utime(
+            self.local_file_path, (self.box_modify_date, self.box_modify_date))
+
     def _download_box_file_to_local(self):
         file_to_write = open(self.local_file_path, 'wb')
         self.box_file.download_to(file_to_write)
         file_to_write.close()
-        self.local_modify_date = self.box_modify_date
-        os.utime(
-            self.local_file_path, (self.box_modify_date, self.box_modify_date))
+        self._syncronize_box_local_modify_times()
         logging.debug('downloaded {0} from box. Copies should be synchronized to {1}'.format(
             self.name, self.box_modify_date))
 
     def _upload_local_file_to_box_folder(self):
         self.box_parent_folder.upload(self.local_file_path)
-        self.box_modify_date = self.local_modify_date
+        self._syncronize_box_local_modify_times()
         logging.debug('uploaded {0} to box. Copies should be synchronized to {1}'.format(
             self.name, self.local_modify_date))
 
     def _replace_box_file_with_local(self):
         self.box_file.update_contents(self.local_file_path)
-        self.box_modify_date = self.local_modify_date
+        self._syncronize_box_local_modify_times()
         logging.debug('replaced {0} to box. Copies should be synchronized to {1}'.format(
             self.name, self.local_modify_date))
 

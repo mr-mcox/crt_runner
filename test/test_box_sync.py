@@ -24,13 +24,6 @@ def test_store_tokens(mock_config):
     os.remove(mock_config.box_refresh_token_file)
 
 
-def test_file_modify_dates():
-    modify_dates = {'file': {'box_modify_date': 1420092000.0,
-                             'local_modify_date': 1420094000.0}}
-    sf = SyncedFile('file', 'box_folder', 'parent_folder', modify_dates)
-    assert sf.modify_dates == modify_dates['file']
-
-
 def test_download_box_file_when_local_does_not_exist():
     sf = SyncedFile('file', 'box_folder', 'parent_folder')
     with patch.object(SyncedFile, '_local_file_exists',
@@ -67,11 +60,13 @@ def test_download_box_file_when_box_more_recent():
     with patch.object(SyncedFile, '_local_file_exists',
                       new_callable=PropertyMock) as lfe, patch.object(SyncedFile, '_box_file_exists',
                                                                       new_callable=PropertyMock) as bfe, patch.object(SyncedFile, '_box_file_more_recent',
-                                                                                                                      new_callable=PropertyMock) as bfmr, patch.object(SyncedFile,
+                                                                                                                      new_callable=PropertyMock) as bfmr, patch.object(SyncedFile, '_local_file_more_recent',
+                                                                                                                      new_callable=PropertyMock) as lfmr, patch.object(SyncedFile,
                                                                                                                                                                        '_download_box_file_to_local') as mock_download:
         lfe.return_value = True
         bfe.return_value = True
         bfmr.return_value = True
+        lfmr.return_value = False
         sf.sync_files()
         assert mock_download.called
 
@@ -84,10 +79,12 @@ def test_update_box_file_when_local_more_recent():
     with patch.object(SyncedFile, '_local_file_exists',
                       new_callable=PropertyMock) as lfe, patch.object(SyncedFile, '_box_file_exists',
                                                                       new_callable=PropertyMock) as bfe, patch.object(SyncedFile, '_local_file_more_recent',
-                                                                                                                      new_callable=PropertyMock) as lfmr, patch.object(SyncedFile,
+                                                                                                                      new_callable=PropertyMock) as lfmr, patch.object(SyncedFile, '_box_file_more_recent',
+                                                                                                                      new_callable=PropertyMock) as bfmr, patch.object(SyncedFile,
                                                                                                                                                                        '_replace_box_file_with_local') as mock_replace:
         lfe.return_value = True
         bfe.return_value = True
         lfmr.return_value = True
+        bfmr.return_value = False
         sf.sync_files()
         assert mock_replace.called
