@@ -279,7 +279,7 @@ class SyncedFile(object):
                 and self.local_modify_date is not None):
             if self.local_modify_date > self.box_modify_date:
                 logging.debug(
-                    'local copy of file {0} is more recent'.format(self.name))
+                    'local copy of file {0} is more recent: local {1} vs  box {2}'.format(self.name, self.local_modify_date, self.box_modify_date))
                 return True
         return False
 
@@ -289,7 +289,7 @@ class SyncedFile(object):
                 and self.local_modify_date is not None):
             if self.box_modify_date > self.local_modify_date:
                 logging.debug(
-                    'box copy of file {0} is more recent'.format(self.name))
+                    'box copy of file {0} is more recent: box {1} vs local {2}'.format(self.name, self.box_modify_date, self.local_modify_date))
                 return True
         return False
 
