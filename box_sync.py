@@ -101,7 +101,7 @@ class BoxSync(object):
         return self._institute_folders
 
     def institute_folder_by_name(self, institute):
-        assert institute in self._institute_folder_by_name[institute]
+        assert institute in self._institute_folder_by_name
         return self._institute_folder_by_name[institute]
 
     def sync_institute_folders(self,institute=None):
