@@ -2,12 +2,15 @@ from .scanner import Scanner
 from .config import Config
 import yaml
 import argparse
+import logging
 
 parser = argparse.ArgumentParser()
 parser.add_argument("config",
                     help="the config file to use")
-parser.add_argument("-r", "--reset", type=str,
+parser.add_argument("-r", "--reset",
                     help="reset is running")
+parser.add_argument("-d", "--debug",
+                    help="run in debug mode")
 args = parser.parse_args()
 
 
@@ -23,6 +26,14 @@ if args.reset:
     yaml.dump(config_yaml, cf)
     cf.close()
 
+config = Config(config_file)
 
-scan = Scanner(config=Config(config_file))
+#Reset is running
+if args.debug:
+    logging.basicConfig(filename=config.crt_runner_log, level=logging.DEBUG)
+else:
+	logging.basicConfig(filename=config.crt_runner_log, level=logging.ERROR)
+
+
+scan = Scanner(config=config)
 scan.sync_and_scan_institute_folders()

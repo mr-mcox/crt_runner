@@ -3,6 +3,8 @@ import os.path
 import re
 from .messenger import Messenger
 from .box_sync import BoxSync
+import logging
+
 
 class Scanner(object):
 
@@ -29,7 +31,7 @@ class Scanner(object):
             # Scan folders
             for institute in config.institute_list:
                 self.scan_folder(institute)
-                #Sync after each institute CRT run
+                # Sync after each institute CRT run
                 box_sync.sync_institute_folders()
 
             config.is_running = False
@@ -40,17 +42,21 @@ class Scanner(object):
         :param str institute: Institute to scan folder for
         """
         config = self.config
-        
+
         initial_run = (config.institute_last_run(institute) is None
-                                   and self.has_all_required_files(institute))
+                       and self.has_all_required_files(institute))
         should_run_crt = False
         if initial_run:
             should_run_crt = True
         elif self.has_all_required_files(institute):
             inputs_recently_updated = (self._most_recent_modify_timestamp_of_inputs(institute)
-                                   > self.config.institute_last_run(institute))
+                                       > self.config.institute_last_run(institute))
             if inputs_recently_updated:
                 should_run_crt = True
+                logging.debug('running crt for institute {0} because modify time is {1} and last run is {2}'.format(
+                    institute, 
+                    self._most_recent_modify_timestamp_of_inputs(institute), 
+                    self.config.institute_last_run(institute)))
 
         if should_run_crt:
             self.perl_command.run_crt_with_notifications(institute=institute,
@@ -81,9 +87,10 @@ class Scanner(object):
             'log': config.crt_log_base_name,
         }
         path = os.path.join(config.info_by_institute(institute, 'path_to_folder'),
-            "".join([
-            config.info_by_institute(institute, 'file_prefix'),
-            base_name_map[file]]))
+                            "".join([
+                                config.info_by_institute(
+                                    institute, 'file_prefix'),
+                                base_name_map[file]]))
         return path
 
     def _most_recent_modify_timestamp_of_inputs(self, institute):

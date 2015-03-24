@@ -3,6 +3,7 @@ import boxsdk
 import os
 import yaml
 import dateutil.parser
+import logging
 
 
 class BoxSync(object):
@@ -271,6 +272,8 @@ class SyncedFile(object):
         if (self.box_modify_date is not None
                 and self.local_modify_date is not None):
             if self.local_modify_date > self.box_modify_date:
+                logging.debug(
+                    'local copy of file {0} is more recent'.format(self.name))
                 return True
         return False
 
@@ -279,6 +282,8 @@ class SyncedFile(object):
         if (self.box_modify_date is not None
                 and self.local_modify_date is not None):
             if self.box_modify_date > self.local_modify_date:
+                logging.debug(
+                    'box copy of file {0} is more recent'.format(self.name))
                 return True
         return False
 
@@ -289,14 +294,20 @@ class SyncedFile(object):
         self.local_modify_date = self.box_modify_date
         os.utime(
             self.local_file_path, (self.box_modify_date, self.box_modify_date))
+        logging.debug('downloaded {0} from box. Copies should be synchronized to {1}'.format(
+            self.name, self.box_modify_date))
 
     def _upload_local_file_to_box_folder(self):
         self.box_parent_folder.upload(self.local_file_path)
         self.box_modify_date = self.local_modify_date
+        logging.debug('uploaded {0} to box. Copies should be synchronized to {1}'.format(
+            self.name, self.local_modify_date))
 
     def _replace_box_file_with_local(self):
         self.box_file.update_contents(self.local_file_path)
         self.box_modify_date = self.local_modify_date
+        logging.debug('replaced {0} to box. Copies should be synchronized to {1}'.format(
+            self.name, self.local_modify_date))
 
     def sync_files(self):
         if self._box_file_exists and not self._local_file_exists:
