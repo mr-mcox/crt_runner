@@ -8,9 +8,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument("config",
                     help="the config file to use")
 parser.add_argument("-r", "--reset",
-                    help="reset is running")
+                    help="reset is running", action="store_true")
 parser.add_argument("-d", "--debug",
-                    help="run in debug mode")
+                    help="run in debug mode", action="store_true")
 args = parser.parse_args()
 
 
