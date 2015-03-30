@@ -60,13 +60,16 @@ class CRTLog(object):
         List all warnings present in log
 
         :return: list of strings of user friendly warnings
-        .. note:: source of warnings is from the config object
+        .. note:: source of warnings is from the config object. All \
+        warnings are wrapped in an <li> tag for html formatted emails
         """
         warning_list = list()
         config = self.config
         for warning in config.crt_warnings:
-            warning_list = warning_list + \
-                self._user_friendly_warning_from_log(warning)
+            new_warnings = self._user_friendly_warning_from_log(warning)
+            if len(new_warnings) > 0:
+                new_formatted_warnings = [ "<li>" + w + "</li>" for w in new_warnings]
+                warning_list = warning_list + new_formatted_warnings
         return warning_list
 
 
