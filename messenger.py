@@ -35,6 +35,7 @@ class Messenger(object):
                                                     'to_email': to_email,
                                                     'subject': subject,
                                                     'text': body,
+                                                    'html': body,
                                                     'headers': {'Reply-To': from_email},
                                                     'to': [{'email': to_email,
                                                             'name': to_name,

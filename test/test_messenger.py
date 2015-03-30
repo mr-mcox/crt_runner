@@ -66,6 +66,7 @@ def test_variable_parameters_of_message(mocked_client):
         assert mocked_message['to_email'] == ps['to_email']
         assert mocked_message['subject'] == ps['subject']
         assert mocked_message['text'] == ps['body']
+        assert mocked_message['html'] == ps['body']
         assert mocked_message['headers'] == {'Reply-To': ps['from_email']}
         assert mocked_message['to'] == [{'email': ps['to_email'],
                                          'name': ps['to_name'],
