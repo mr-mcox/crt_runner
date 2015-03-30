@@ -1,5 +1,6 @@
 import yaml
 import os.path
+import re
 
 
 class Config(object):
@@ -91,11 +92,19 @@ class Config(object):
         :param str field: The field desired for the above email
         :return: The field value
         :raises AssertionError: if the email_type or field is not in the config file
+        
+        .. note:: if the field ends in .html, it will try to read the contents of a
+        file at that path
         """
         assert 'emails' in self._config
         assert email_type in self._config['emails']
         assert field in self._config['emails'][email_type]
-        return self._config['emails'][email_type][field]
+        field_value = self._config['emails'][email_type][field]
+
+        if re.search('.html$',field_value) is not None:
+            assert os.path.isfile(field_value), field_value + " appears to be a file, but it does not exist"
+            field_value = open(field_value).read()
+        return field_value
 
     @property
     def crt_warnings(self):

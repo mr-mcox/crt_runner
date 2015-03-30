@@ -1,6 +1,7 @@
 from unittest.mock import patch
 from ..config import Config
 import os.path
+import tempfile
 
 
 def test_topline_settings():
@@ -92,3 +93,20 @@ def test_set_last_run_for_institute():
         c = Config('config.yaml')
         c.set_last_run('Atlanta',1234)
     assert c.info_by_institute('Atlanta', 'last_run') == 1234
+
+
+def test_if_email_field_ends_in_html_return_contents_of_the_file(request):
+    config_yaml = {'emails': {'crt_started': {'subject': 'subject.html',
+                                              'body': 'It has begun'}}}
+    subj_file = open(config_yaml['emails']['crt_started']['subject'],'w')
+    subj_file_contents = "Here's a subject!"
+    subj_file.write(subj_file_contents)
+    subj_file.close()
+
+    with patch.object(Config, '_yaml_from_file', return_value=config_yaml):
+        c = Config('config.yaml')
+    assert c.email_text('crt_started', 'subject') == subj_file_contents
+
+    def delete_subject_file():
+        os.remove(config_yaml['emails']['crt_started']['subject'])
+    request.addfinalizer(delete_subject_file)
