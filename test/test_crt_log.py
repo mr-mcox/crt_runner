@@ -165,7 +165,9 @@ def test_generate_list_of_warnings_from_log_file(log_file_with_warning,
     expected_warnings = list()
     for warning in config.crt_warnings:
         if re.search(warning, log.log_contents) is not None:
-            expected_warnings.append(config.user_friendly_warning(warning))
+            base_warning = config.user_friendly_warning(warning)
+            formatted_warning = "<li>" + base_warning + "</li>"
+            expected_warnings.append(formatted_warning)
 
     assert set(expected_warnings) == set(log.warnings_in_log())
 
@@ -180,7 +182,9 @@ def test_list_of_warnings_with_variable_elements(log_file_with_warning,
     exp_substitution = re.search(
         exp_warning, log.log_contents).group(1)
     friendly_warning_pattern = config.user_friendly_warning(exp_warning)
-    exp_output = re.sub(r"\b(X)\b", exp_substitution, friendly_warning_pattern)
+    exp_output = "<li>" + \
+        re.sub(r"\b(X)\b", exp_substitution,
+               friendly_warning_pattern) + "</li>"
     assert exp_output in log.warnings_in_log()
 
 
@@ -198,8 +202,8 @@ def test_list_of_warnings_with_multiple_variable_elements(log_file_with_warning,
     friendly_warning_pattern = config.user_friendly_warning(exp_warning)
     exp_output_a = re.sub(
         r"\b(X)\b", exp_substitution_a, friendly_warning_pattern, count=1)
-    exp_output_b = re.sub(
-        r"\b(X)\b", exp_substitution_b, exp_output_a, count=1)
+    exp_output_b = "<li>" + re.sub(
+        r"\b(X)\b", exp_substitution_b, exp_output_a, count=1)  + "</li>"
     assert exp_output_b in log.warnings_in_log()
 
 
@@ -209,7 +213,7 @@ def test_send_warning_message(log_file_with_warning,
     log = CRTLog(log_file_with_warning, config=config, institute='Atlanta')
     warning_messages = ['warn_1', 'warn_2']
     with patch.object(Messenger, 'send_email') as send_email_mock:
-        with patch.object(CRTLog,'warnings_in_log', return_value=warning_messages):
+        with patch.object(CRTLog, 'warnings_in_log', return_value=warning_messages):
             log.send_warnings_message()
 
     expected_warning_text = "\n".join(warning_messages)
