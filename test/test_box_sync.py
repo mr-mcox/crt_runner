@@ -38,8 +38,6 @@ def test_download_box_file_when_local_does_not_exist():
 
 def test_upload_local_file_when_box_copy_does_not_exist():
     sf = SyncedFile('file', 'box_folder', 'parent_folder')
-    # sf._local_file_exists = True
-    # sf._box_file_exists = False
     with patch.object(SyncedFile, '_local_file_exists',
                       new_callable=PropertyMock) as lfe:
         with patch.object(SyncedFile, '_box_file_exists',
@@ -54,9 +52,6 @@ def test_upload_local_file_when_box_copy_does_not_exist():
 
 def test_download_box_file_when_box_more_recent():
     sf = SyncedFile('file', 'box_folder', 'parent_folder')
-    # sf._local_file_exists = True
-    # sf._box_file_exists = True
-    # sf._box_file_more_recent = True
     with patch.object(SyncedFile, '_local_file_exists',
                       new_callable=PropertyMock) as lfe, patch.object(SyncedFile, '_box_file_exists',
                                                                       new_callable=PropertyMock) as bfe, patch.object(SyncedFile, '_box_file_more_recent',
@@ -73,9 +68,6 @@ def test_download_box_file_when_box_more_recent():
 
 def test_update_box_file_when_local_more_recent():
     sf = SyncedFile('file', 'box_folder', 'parent_folder')
-    # sf._local_file_exists = True
-    # sf._box_file_exists = True
-    # sf._local_file_more_recent = True
     with patch.object(SyncedFile, '_local_file_exists',
                       new_callable=PropertyMock) as lfe, patch.object(SyncedFile, '_box_file_exists',
                                                                       new_callable=PropertyMock) as bfe, patch.object(SyncedFile, '_local_file_more_recent',

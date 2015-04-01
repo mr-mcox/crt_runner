@@ -62,12 +62,7 @@ class BoxSync(object):
     @property
     def modify_dates(self):
         if not hasattr(self, '_modify_dates'):
-            if os.path.isfile(self.config.box_sync_modify_dates):
-                yaml_file = open(self.config.box_sync_modify_dates)
-                self._modify_dates = yaml.load(yaml_file)
-                yaml_file.close()
-            else:
-                self._modify_dates = dict()
+            self._modify_dates = dict()
         return self._modify_dates
 
     @property
