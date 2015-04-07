@@ -315,7 +315,7 @@ class SyncedFile(object):
             self.name, self.box_modify_date))
 
     def _upload_local_file_to_box_folder(self):
-        self.box_parent_folder.upload(self.local_file_path)
+        self.box_file = self.box_parent_folder.upload(self.local_file_path)
         self._syncronize_box_local_modify_times()
         logging.debug('uploaded {0} to box. Copies should be synchronized to {1}'.format(
             self.name, self.local_modify_date))
