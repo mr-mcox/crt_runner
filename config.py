@@ -67,6 +67,9 @@ class Config(object):
         if field == 'last_run':
             return self.institute_last_run(institute)
 
+        if field == 'box_folder_id':
+            return self.institute_box_folder_id(institute)
+
         assert field in self._config['institutes'][institute]
         return self._config['institutes'][institute][field]
 
@@ -84,6 +87,16 @@ class Config(object):
 
     def set_last_run(self, institute, value):
         self._config['institutes'][institute]['last_run'] = value
+
+    def institute_box_folder_id(self, institute):
+        """Provide box folder id for caching purposes"""
+        if 'box_folder_id' in self._config['institutes'][institute]:
+            return self._config['institutes'][institute]['box_folder_id']
+        else:
+            return None
+
+    def set_box_folder_id(self, institute, value):
+        self._config['institutes'][institute]['box_folder_id'] = value
 
     def email_text(self, email_type, field):
         """Provide text for a specific type of email

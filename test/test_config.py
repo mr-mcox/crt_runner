@@ -110,3 +110,16 @@ def test_if_email_field_ends_in_html_return_contents_of_the_file(request):
     def delete_subject_file():
         os.remove(config_yaml['emails']['crt_started']['subject'])
     request.addfinalizer(delete_subject_file)
+
+def test_box_folder_for_institute_returns_none_if_non_existant():
+    config_yaml = {'institutes': {'Atlanta': {}}}
+    with patch.object(Config, '_yaml_from_file', return_value=config_yaml):
+        c = Config('config.yaml')
+    assert c.info_by_institute('Atlanta', 'box_folder_id') is None
+
+def test_set_box_folder_id_for_institute():
+    config_yaml = {'institutes': {'Atlanta': {}}}
+    with patch.object(Config, '_yaml_from_file', return_value=config_yaml):
+        c = Config('config.yaml')
+        c.set_box_folder_id('Atlanta',1234)
+    assert c.info_by_institute('Atlanta', 'box_folder_id') == 1234

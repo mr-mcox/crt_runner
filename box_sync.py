@@ -87,12 +87,24 @@ class BoxSync(object):
             institute_folders = list()
             self._institute_folder_by_name = dict()
             for institute in self.config.institute_list:
+                # Pass box folder if it exists
+                institute_box_folder_id = self.config.info_by_institute(
+                    institute, 'box_folder_id')
+                box_folder = None
+                if institute_box_folder_id is not None:
+                    box_folder = self.box_client.folder(
+                        folder_id=str(institute_box_folder_id))
+
                 sf = SyncedFolder(name=institute,
                                   box_parent_folder=self.root_box_folder,
                                   local_parent_folder=self.config.root_local_folder,
-                                  parent_modify_dates=self.modify_dates)
+                                  parent_modify_dates=self.modify_dates,
+                                  box_folder=box_folder)
                 institute_folders.append(sf)
                 self._institute_folder_by_name[institute] = sf
+
+                self.config.set_box_folder_id(institute, sf.box_folder_id)
+
             self._institute_folders = institute_folders
         return self._institute_folders
 
@@ -130,16 +142,21 @@ class SyncedFolder(object):
                  name,
                  box_parent_folder,
                  local_parent_folder,
-                 parent_modify_dates=dict()):
+                 parent_modify_dates=dict(),
+                 box_folder=None):
         self.name = name
         self.box_parent_folder = box_parent_folder
         self.local_parent_folder = local_parent_folder
         self.parent_modify_dates = parent_modify_dates
+        self.passed_box_folder = box_folder
 
     @property
     def box_folder(self):
-        if not hasattr(self, '_box_file'):
+        if not hasattr(self, '_box_folder'):
             self._box_folder = None
+            if self.passed_box_folder is not None:
+                self._box_folder = self.passed_box_folder
+                return self._box_folder
             for item in self.box_parent_folder.get_items(limit=100):
                 if item.get()['name'] == self.name:
                     self._box_folder = item
@@ -150,6 +167,12 @@ class SyncedFolder(object):
                     self.name)
                 self.parent_modify_dates[self.name] = dict()
         return self._box_folder
+
+    @property
+    def box_folder_id(self):
+        if not hasattr(self, '_box_folder_id'):
+            self._box_folder_id = self.box_folder.get()['id']
+        return self._box_folder_id
 
     @property
     def local_file_path(self):
