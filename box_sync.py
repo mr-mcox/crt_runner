@@ -4,6 +4,7 @@ import os
 import yaml
 import dateutil.parser
 import logging
+from datetime import datetime
 
 
 class BoxSync(object):
@@ -99,7 +100,7 @@ class BoxSync(object):
         assert institute in self._institute_folder_by_name
         return self._institute_folder_by_name[institute]
 
-    def sync_institute_folders(self,institute=None):
+    def sync_institute_folders(self, institute=None):
         """Sync folder or folders
 
         :param str institute: (Optional) Institute name
@@ -198,6 +199,8 @@ class SyncedFolder(object):
         return self.modify_dates
 
     def sync_folder(self):
+        logging.debug(
+            "{0}: Syncing folder {1}".format(datetime.utcnow(), self.name))
         for sf in self.synced_files:
             sf.sync_files()
         self.refresh_modify_dates()
@@ -247,7 +250,7 @@ class SyncedFile(object):
             return None
         else:
             return dateutil.parser.parse(
-                            self.box_file.get()['modified_at']).timestamp()
+                self.box_file.get()['modified_at']).timestamp()
 
     @property
     def box_file(self):

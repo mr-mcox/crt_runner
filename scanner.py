@@ -4,6 +4,7 @@ import re
 from .messenger import Messenger
 from .box_sync import BoxSync
 import logging
+from datetime import datetime
 
 
 class Scanner(object):
@@ -25,11 +26,15 @@ class Scanner(object):
         if not config.is_running:
             config.is_running = True
             # Sync folders
+            logging.debug(
+                "{0}: Starting sync".format(datetime.utcnow()))
             box_sync = BoxSync(config)
             box_sync.sync_institute_folders()
 
             # Scan folders
             for institute in config.institute_list:
+                logging.debug(
+                    "{0}: Scanning folder {1}".format(datetime.utcnow(), institute))
                 self.scan_folder(institute)
                 # Sync after each institute CRT run
                 box_sync.sync_institute_folders(institute)
@@ -54,8 +59,8 @@ class Scanner(object):
             if inputs_recently_updated:
                 should_run_crt = True
                 logging.debug('running crt for institute {0} because modify time is {1} and last run is {2}'.format(
-                    institute, 
-                    self._most_recent_modify_timestamp_of_inputs(institute), 
+                    institute,
+                    self._most_recent_modify_timestamp_of_inputs(institute),
                     self.config.institute_last_run(institute)))
 
         if should_run_crt:
