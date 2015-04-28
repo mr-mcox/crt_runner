@@ -246,13 +246,23 @@ class SyncedFile(object):
 
     @property
     def box_modify_date(self):
-        if self.box_file is None:
-            return None
-        else:
-            logging.debug(
-                "{0}: Retrieving box modified date for {1}".format(datetime.utcnow(), self.name))
-            return dateutil.parser.parse(
-                self.box_file.get()['modified_at']).timestamp()
+        if not hasattr(self, '_box_modify_date'):
+            if self.box_file is None:
+                self._box_modify_date
+            else:
+                self.update_box_modify_date()
+                assert hasattr(self, '_box_modify_date')
+        return self._box_modify_date
+
+    def update_box_modify_date(self):
+        logging.debug(
+            "{0}: Retrieving box modified date for {1}".format(datetime.utcnow(), self.name))
+        self._box_modify_date = dateutil.parser.parse(
+            self.box_file.get()['modified_at']).timestamp()
+
+    @box_modify_date.setter
+    def box_modify_date(self, value):
+        self._box_modify_date = value
 
     @property
     def box_file(self):
@@ -307,6 +317,7 @@ class SyncedFile(object):
         return False
 
     def _syncronize_box_local_modify_times(self):
+        self.update_box_modify_date()
         self.local_modify_date = self.box_modify_date
         os.utime(
             self.local_file_path, (self.box_modify_date, self.box_modify_date))
