@@ -249,6 +249,8 @@ class SyncedFile(object):
         if self.box_file is None:
             return None
         else:
+            logging.debug(
+                "{0}: Retrieving box modified date for {1}".format(datetime.utcnow(), self.name))
             return dateutil.parser.parse(
                 self.box_file.get()['modified_at']).timestamp()
 
