@@ -4,6 +4,7 @@ import os
 import yaml
 import dateutil.parser
 import logging
+import sys
 from datetime import datetime
 
 
@@ -347,20 +348,32 @@ class SyncedFile(object):
 
     def _download_box_file_to_local(self):
         file_to_write = open(self.local_file_path, 'wb')
-        self.box_file.download_to(file_to_write)
+        try:
+            self.box_file.download_to(file_to_write)
+        except:
+            logging.error(
+                'Error while downloading file {0}: {1}'.format(self.name, sys.exc_info()[0]))
         file_to_write.close()
         self._syncronize_box_local_modify_times()
         logging.debug('downloaded {0} from box. Copies should be synchronized to {1}'.format(
             self.name, self.box_modify_date))
 
     def _upload_local_file_to_box_folder(self):
-        self.box_file = self.box_parent_folder.upload(self.local_file_path)
+        try:
+            self.box_file = self.box_parent_folder.upload(self.local_file_path)
+        except:
+            logging.error(
+                'Error while uploading file {0}: {1}'.format(self.name, sys.exc_info()[0]))
         self._syncronize_box_local_modify_times()
         logging.debug('uploaded {0} to box. Copies should be synchronized to {1}'.format(
             self.name, self.local_modify_date))
 
     def _replace_box_file_with_local(self):
-        self.box_file.update_contents(self.local_file_path)
+        try:
+            self.box_file.update_contents(self.local_file_path)
+        except:
+            logging.error(
+                'Error while replacing file {0}: {1}'.format(self.name, sys.exc_info()[0]))
         self._syncronize_box_local_modify_times()
         logging.debug('replaced {0} to box. Copies should be synchronized to {1}'.format(
             self.name, self.local_modify_date))
