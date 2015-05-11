@@ -281,8 +281,14 @@ class SyncedFile(object):
     def update_box_modify_date(self):
         logging.debug(
             "{0}: Retrieving box modified date for {1}".format(datetime.utcnow(), self.name))
-        self._box_modify_date = dateutil.parser.parse(
-            self.box_file.get()['modified_at']).timestamp()
+        box_modify_date = None
+        try:
+            box_modify_date = dateutil.parser.parse(
+                self.box_file.get()['modified_at']).timestamp()
+        except:
+            logging.debug(
+            "{0}: Failed to get box modified date for {1}".format(datetime.utcnow(), self.name))
+        self._box_modify_date = box_modify_date
 
     @box_modify_date.setter
     def box_modify_date(self, value):
