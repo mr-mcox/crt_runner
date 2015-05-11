@@ -348,9 +348,10 @@ class SyncedFile(object):
 
     def _syncronize_box_local_modify_times(self):
         self.update_box_modify_date()
-        self.local_modify_date = self.box_modify_date
-        os.utime(
-            self.local_file_path, (self.box_modify_date, self.box_modify_date))
+        if self.box_modify_date is not None:
+            self.local_modify_date = self.box_modify_date
+            os.utime(
+                self.local_file_path, (self.box_modify_date, self.box_modify_date))
 
     def _download_box_file_to_local(self):
         file_to_write = open(self.local_file_path, 'wb')
